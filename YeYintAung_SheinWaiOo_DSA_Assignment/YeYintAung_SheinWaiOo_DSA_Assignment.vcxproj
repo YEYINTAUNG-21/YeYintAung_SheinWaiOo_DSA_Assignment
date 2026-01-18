@@ -123,10 +123,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="YeYintAung_SheinWaiOo_DSA_Assignment.cpp" />
+    <ClCompile Include="admin\Game.cpp" />
+    <ClCompile Include="admin\GameList.cpp" />
+    <ClCompile Include="admin\Member.cpp" />
+    <ClCompile Include="admin\MememberList.cpp" />
+    <ClCompile Include="admin\PlayRecord.cpp" />
+    <ClCompile Include="admin\PlayRecordList.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="member\BorrowList.cpp" />
+    <ClCompile Include="member\BorrowRecord.cpp" />
+    <ClCompile Include="member\Rating.cpp" />
+    <ClCompile Include="member\RatingList.cpp" />
+    <ClCompile Include="utils\CSVReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\games.csv">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </None>
     <None Include=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="admin\MemberList.h" />
+    <ClInclude Include="BorrowList.h" />
+    <ClInclude Include="BorrowRecord.h" />
+    <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameList.h" />
+    <ClInclude Include="Member.h" />
+    <ClInclude Include="PlayRecord.h" />
+    <ClInclude Include="PlayRecordList.h" />
+    <ClInclude Include="Rating.h" />
+    <ClInclude Include="RatingList.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="YeYintAung_SheinWaiOo_DSA_Assignment.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

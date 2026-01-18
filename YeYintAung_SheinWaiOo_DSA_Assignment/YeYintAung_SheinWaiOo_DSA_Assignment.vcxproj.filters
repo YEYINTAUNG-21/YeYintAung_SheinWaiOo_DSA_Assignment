@@ -13,13 +13,99 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="admin">
+      <UniqueIdentifier>{af6f08cc-3c94-417e-a9af-c5c19e5b155c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="member">
+      <UniqueIdentifier>{5f1cac32-c24c-4df6-99a9-8386d4be283f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{810e9131-a218-4d22-92a7-87ebee27808c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="YeYintAung_SheinWaiOo_DSA_Assignment.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\Game.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\GameList.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\Member.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\PlayRecord.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\PlayRecordList.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\MememberList.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="member\BorrowList.cpp">
+      <Filter>member</Filter>
+    </ClCompile>
+    <ClCompile Include="member\BorrowRecord.cpp">
+      <Filter>member</Filter>
+    </ClCompile>
+    <ClCompile Include="member\Rating.cpp">
+      <Filter>member</Filter>
+    </ClCompile>
+    <ClCompile Include="member\RatingList.cpp">
+      <Filter>member</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\CSVReader.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="..\..\games.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="GameList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="Member.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayRecord.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayRecordList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="BorrowRecord.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="BorrowList.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="Rating.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="RatingList.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVReader.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\MemberList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="YeYintAung_SheinWaiOo_DSA_Assignment.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
