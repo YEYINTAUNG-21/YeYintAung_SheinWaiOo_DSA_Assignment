@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Visual Studio database/cache
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+
+# Build output
+Debug/
+Release/
+x64/
+x86/
+
+# Intermediate files
+*.obj
+*.ilk
+*.pdb
+*.tlog
+*.log
