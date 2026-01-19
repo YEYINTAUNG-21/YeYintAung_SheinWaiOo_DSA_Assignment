@@ -6,8 +6,8 @@
 #include "utils/CSVReader.h"
 using namespace std;
 
-void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, char adminId) {
-    cout << "Welcome, " << memberList.getAdminName(adminId) << "!/n";
+void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
+    cout << "Welcome, " << adminList.getAdminName(adminId) << "!\n";
     int choice;
     do {
         cout << "--- Administrator Menu ---\n";
@@ -15,7 +15,7 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
         cout << "2. Remove a board game\n";
         cout << "3. Add a new member\n";
         cout << "4. Display a summary of games borrowed/returned\n";
-        cout << "0. Back\n";
+        cout << "0. Logout\n";
         cout << "Enter Choice: ";
         cin >> choice;
 
@@ -52,8 +52,8 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
     } while (choice != 0);
 }
 
-void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, char memberId) {
-    cout << "Welcome, " << memberList.getMemberName(memberId) << "!/n";
+void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, const string& memberId) {
+    cout << "Welcome, " << memberList.getMemberName(memberId) << "!\n";
     int choice;
     do {
         cout << "--- Member Menu ---\n";
@@ -66,12 +66,12 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
 
         switch (choice) {
         case 1: {
-            borrowList.borrowGame(memberId, gameId, gameList);
+            borrowList.borrowGame(memberId, gameName, gameList);
             break;
         }
 
         case 2: {
-            borrowList.returnGame(memberId, gameId);
+            borrowList.returnGame(memberId, gameName);
             break;
         }
 
@@ -100,9 +100,8 @@ int main()
     BorrowList borrowList;
     AdminList adminList;
 
-    adminList.addAdmin(A100);
-    adminList.addAdmin(A200);
-    adminList.addAdmin(A300);
+    adminList.addAdmin("A100", "YYA");
+    adminList.addAdmin("A200", "SWO");
 
     CSVReader::loadGame("games.csv", gameList);
     
@@ -117,12 +116,12 @@ int main()
 
         switch (choice) {
         case 1: {
-            char adminId;
+            string adminId;
             cout << "Enter Admin ID: ";
             cin >> adminId;
             if (adminList.login(adminId)) {
                 cout << "Admin login successful.\n";
-                adminMenu(gameList, memberList, borrowList);
+                adminMenu(gameList, memberList, borrowList, adminList, adminId);
             }
             else {
                 cout << "Invalid Admin ID.\n";
@@ -131,12 +130,12 @@ int main()
         }
 
         case 2: {
-            char memberId;
+            string memberId;
             cout << "Enter Member ID: ";
             cin >> memberId;
             if (memberList.exists(memberId)) {
                 cout << "Member login successful.\n";
-                memberMenu(gameList, borrowList)
+                memberMenu(gameList, borrowList, memberList, memberId);
             }
             else {
                 cout << "Member not found.\n";
