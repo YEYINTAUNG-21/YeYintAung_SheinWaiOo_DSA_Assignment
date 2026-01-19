@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="admin\Admin.cpp" />
+    <ClCompile Include="admin\AdminList.cpp" />
     <ClCompile Include="admin\Game.cpp" />
     <ClCompile Include="admin\GameList.cpp" />
     <ClCompile Include="admin\Member.cpp" />
-    <ClCompile Include="admin\MememberList.cpp" />
+    <ClCompile Include="admin\MemberList.cpp" />
     <ClCompile Include="admin\PlayRecord.cpp" />
     <ClCompile Include="admin\PlayRecordList.cpp" />
     <ClCompile Include="main.cpp" />
@@ -143,18 +145,20 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="admin\Admin.h" />
+    <ClInclude Include="admin\AdminList.h" />
+    <ClInclude Include="admin\Game.h" />
+    <ClInclude Include="admin\GameList.h" />
+    <ClInclude Include="admin\Member.h" />
     <ClInclude Include="admin\MemberList.h" />
-    <ClInclude Include="BorrowList.h" />
-    <ClInclude Include="BorrowRecord.h" />
-    <ClInclude Include="CSVReader.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameList.h" />
-    <ClInclude Include="Member.h" />
-    <ClInclude Include="PlayRecord.h" />
-    <ClInclude Include="PlayRecordList.h" />
-    <ClInclude Include="Rating.h" />
-    <ClInclude Include="RatingList.h" />
+    <ClInclude Include="admin\PlayRecord.h" />
+    <ClInclude Include="admin\PlayRecordList.h" />
+    <ClInclude Include="member\BorrowList.h" />
+    <ClInclude Include="member\BorrowRecord.h" />
+    <ClInclude Include="member\Rating.h" />
+    <ClInclude Include="member\RatingList.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="utils\CSVReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="YeYintAung_SheinWaiOo_DSA_Assignment.rc" />

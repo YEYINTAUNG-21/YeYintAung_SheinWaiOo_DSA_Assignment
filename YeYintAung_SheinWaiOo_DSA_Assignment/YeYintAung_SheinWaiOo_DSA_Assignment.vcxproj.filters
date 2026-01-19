@@ -27,22 +27,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="admin\Game.cpp">
-      <Filter>admin</Filter>
-    </ClCompile>
-    <ClCompile Include="admin\GameList.cpp">
-      <Filter>admin</Filter>
+    <ClCompile Include="utils\CSVReader.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="admin\Member.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\MemberList.cpp">
       <Filter>admin</Filter>
     </ClCompile>
     <ClCompile Include="admin\PlayRecord.cpp">
       <Filter>admin</Filter>
     </ClCompile>
     <ClCompile Include="admin\PlayRecordList.cpp">
-      <Filter>admin</Filter>
-    </ClCompile>
-    <ClCompile Include="admin\MememberList.cpp">
       <Filter>admin</Filter>
     </ClCompile>
     <ClCompile Include="member\BorrowList.cpp">
@@ -57,8 +54,17 @@
     <ClCompile Include="member\RatingList.cpp">
       <Filter>member</Filter>
     </ClCompile>
-    <ClCompile Include="utils\CSVReader.cpp">
-      <Filter>utils</Filter>
+    <ClCompile Include="admin\Game.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\GameList.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\Admin.cpp">
+      <Filter>admin</Filter>
+    </ClCompile>
+    <ClCompile Include="admin\AdminList.cpp">
+      <Filter>admin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,40 +72,46 @@
     <None Include="..\..\games.csv" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.h">
-      <Filter>admin</Filter>
-    </ClInclude>
-    <ClInclude Include="GameList.h">
-      <Filter>admin</Filter>
-    </ClInclude>
-    <ClInclude Include="Member.h">
-      <Filter>admin</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayRecord.h">
-      <Filter>admin</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayRecordList.h">
-      <Filter>admin</Filter>
-    </ClInclude>
-    <ClInclude Include="BorrowRecord.h">
-      <Filter>member</Filter>
-    </ClInclude>
-    <ClInclude Include="BorrowList.h">
-      <Filter>member</Filter>
-    </ClInclude>
-    <ClInclude Include="Rating.h">
-      <Filter>member</Filter>
-    </ClInclude>
-    <ClInclude Include="RatingList.h">
-      <Filter>member</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVReader.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="admin\Game.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\GameList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\Member.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\PlayRecord.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\PlayRecordList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="member\BorrowList.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="member\BorrowRecord.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="member\Rating.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="member\RatingList.h">
+      <Filter>member</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\CSVReader.h">
+      <Filter>utils</Filter>
+    </ClInclude>
     <ClInclude Include="admin\MemberList.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\Admin.h">
+      <Filter>admin</Filter>
+    </ClInclude>
+    <ClInclude Include="admin\AdminList.h">
       <Filter>admin</Filter>
     </ClInclude>
   </ItemGroup>

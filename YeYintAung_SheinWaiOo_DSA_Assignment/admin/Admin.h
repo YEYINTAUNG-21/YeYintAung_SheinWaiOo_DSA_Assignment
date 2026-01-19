@@ -3,10 +3,10 @@
 #include<iostream>
 using namespace std;
 
-class RatingList
+class Admin
 {
 private:
 
 public:
-	RatingList();
+	Admin();
 };
