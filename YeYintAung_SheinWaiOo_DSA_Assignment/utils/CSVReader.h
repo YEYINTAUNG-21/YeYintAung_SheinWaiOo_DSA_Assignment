@@ -1,6 +1,7 @@
 #pragma once
 #include<string>
 #include<iostream>
+#include "../admin/GameList.h"
 using namespace std;
 
 class CSVReader
@@ -8,5 +9,5 @@ class CSVReader
 private:
 
 public:
-	CSVReader();
+	static void loadGame(const string& filename, GameList& gameList);
 };
