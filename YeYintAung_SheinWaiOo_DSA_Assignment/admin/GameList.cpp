@@ -5,7 +5,88 @@ GameList::GameList() {
 }
 
 GameList::~GameList() {
+    while (root != nullptr) {
+        root = remove(root, root->item.getName());
+    }
+}
 
+void GameList::addGame() {
+    string name;
+    int minP, maxP, minT, maxT, year;
+
+    cout << "Enter game name: ";
+    getline(cin, name);
+    cout << "Enter minimum player: ";
+    cin >> minP;
+    cout << "Enter maximum player: ";
+    cin >> maxP;
+    cout << "Enter minimum play time(min): ";
+    cin >> minT;
+    cout << "Enter maximum play time(min): ";
+    cin >> maxT;
+    cout << "Enter year published(min): ";
+    cin >> year;
+
+    Game game(name, minP, maxP, minT, maxP, year);
+    insertGame(game);
+    cout << "Game added successfully" << endl;
+}
+
+void GameList::removeGame() {
+    string name;
+    cout << "Enter game name to remove: " << flush;
+    getline(cin, name);
+
+    Game* game = searchGameByName(name);
+    if (game == nullptr) {
+        cout << "Game not found" << endl;
+        return;
+    }
+    if (game->getCopies() > 1) {
+        game->decreaseCopies();
+        cout << "One copy removed. Remaining copies: " << game->getCopies() << endl;
+    }
+    else {
+        root = remove(root, name);
+        cout << "Game removed successfully" << endl;
+    }
+}
+
+GameList::BinaryNode* GameList::remove(BinaryNode* node, const string& gameName) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+    if (gameName < node->item.getName()) {
+        node->left = remove(node->left, gameName);
+    }
+    else if (gameName > node->item.getName()) {
+        node->right = remove(node->right, gameName);
+    }
+    else {
+        if (node->left == nullptr && node->right == nullptr) {
+            delete node;
+            return nullptr;
+        }
+        else if (node->left == nullptr) {
+            BinaryNode* temp = node->right;
+            delete node;
+            return temp;
+        }
+        else if (node->right == nullptr) {
+            BinaryNode* temp = node->left;
+            delete node;
+            return temp;
+        }
+        else {
+            BinaryNode* successor = node->right;
+            while (successor->left != nullptr) {
+                successor = successor->left;
+            }
+            node->item = successor->item;
+            node->right = remove(node->right, successor->item.getName());
+        }
+    }
+    return node;
 }
 
 void GameList::insertGame(const Game& game) {
@@ -33,6 +114,28 @@ GameList::BinaryNode* GameList::insert(BinaryNode* node, const Game& game) {
     return node;
 }
 
+Game* GameList::searchGameByName(const string& gameName) const {
+    BinaryNode* node = search(root, gameName);
+    if (node == nullptr) {
+        return nullptr;
+    }
+    return &(node->item);
+}
+
+GameList::BinaryNode* GameList::search(BinaryNode* node, const string& gameName) const {
+    if (node == nullptr) {
+        return nullptr;
+    }
+    if (gameName == node->item.getName()) {
+        return node;
+    }
+    else if (gameName < node->item.getName()) {
+        return search(node->left, gameName);
+    }
+    else {
+        return search(node->right, gameName);
+    }
+}
 
 void GameList::displayAllGames() const{
 	inorder(root);
