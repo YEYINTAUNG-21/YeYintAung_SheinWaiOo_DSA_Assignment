@@ -9,14 +9,14 @@ Student ID - S10268975C
 #include "Admin.h"
 using namespace std;
 
-typedef Admin ItemType;
+typedef Admin AdminItem;
 
 class AdminList
 {
 private:
 	struct Node
 	{
-		ItemType item;
+		AdminItem item;
 		Node* next;
 	};
 	Node* firstNode;	

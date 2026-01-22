@@ -9,13 +9,13 @@ Student ID - S10268975C
 #include "Game.h"
 using namespace std;
 
-typedef Game ItemType;
+typedef Game GameItem;
 
 class GameList
 {
 private:
 	struct BinaryNode {
-		ItemType item;
+		GameItem item;
 		BinaryNode* left;
 		BinaryNode* right;
 	};

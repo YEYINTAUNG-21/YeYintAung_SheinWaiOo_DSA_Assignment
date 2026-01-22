@@ -17,6 +17,7 @@ private:
 	int minPlayTime;
 	int maxPlayTime;
 	int yearPublished;
+	int copies;
 
 public:
 	Game();
@@ -28,4 +29,7 @@ public:
 	string getMinPlayTime() const;
 	string getMaxPlayTime() const;
 	string getYearPublished() const;
+	int getCopies() const;
+	void increaseCopies();
+	bool decreaseCopies();
 };
