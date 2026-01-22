@@ -158,8 +158,34 @@ int main()
 
 int main() {
     GameList gameList;
+
+    cout << "=== TEST: Load games from CSV ===\n";
     CSVReader::loadGame("games.csv", gameList);
 
     cout << "\n=== TEST: Display All Games ===\n";
     gameList.displayAllGames();
+
+    cout << "\n=== TEST: Search ===\n";
+    Game* g = gameList.searchGameByName("Saboteur");
+    if (g != nullptr) {
+        cout << "found game: " << g->getName() << endl;
+    }
+    else {
+        cout << "Game not found" << endl;
+    }
+
+    cout << "\n=== TEST: remove ===" << endl;
+    gameList.removeGame();
+
+    cout << "\n=== TEST: Display all games (after removal) ===" << endl;
+    gameList.displayAllGames();
+
+    cout << "\n=== TEST: manual add (duplicate) ===" << endl;
+    gameList.addGame();
+
+    cout << "\n=== TEST: Display all games (after adding duplicate) ===" << endl;
+    gameList.displayAllGames();
+
+    cout << "\n=== END OF TEST ===" << endl;
+    return 0;
 }
