@@ -5,7 +5,7 @@
 #include "member/BorrowList.h"
 #include "utils/CSVReader.h"
 using namespace std;
-
+/* 
 void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
     cout << "Welcome, " << adminList.getAdminName(adminId) << "!\n";
     int choice;
@@ -153,4 +153,13 @@ int main()
         }
         }
     } while (choice != 0);
+}
+*/
+
+int main() {
+    GameList gameList;
+    CSVReader::loadGame("games.csv", gameList);
+
+    cout << "\n=== TEST: Display All Games ===\n";
+    gameList.displayAllGames();
 }
