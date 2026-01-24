@@ -143,6 +143,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
     </None>
     <None Include=".gitignore" />
+    <None Include="CONTRIBUTING.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin\Admin.h" />

@@ -6,7 +6,7 @@ Student ID - S10268975C
 #pragma once
 #include<string>
 #include<iostream>
-#include "Member.h";
+#include "Member.h"
 using namespace std;
 
 const int TABLE_SIZE = 101;

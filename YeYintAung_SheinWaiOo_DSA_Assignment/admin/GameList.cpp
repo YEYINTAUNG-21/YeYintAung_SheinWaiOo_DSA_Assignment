@@ -27,7 +27,7 @@ void GameList::addGame() {
     cout << "Enter year published(min): ";
     cin >> year;
 
-    Game game(name, minP, maxP, minT, maxP, year);
+    Game game(name, minP, maxP, minT, maxT, year);
     insertGame(game);
     cout << "Game added successfully" << endl;
 }
@@ -141,17 +141,38 @@ void GameList::displayAllGames() const{
 	inorder(root);
 }
 
-void GameList::inorder(BinaryNode* node) const {
-	if (node == nullptr) {
-		return;
-	}
-	else {
-		inorder(node->left);
+
+//void GameList::inorder(BinaryNode* node) const {
+//	if (node == nullptr) {
+//		return;
+//	}
+//	else {
+//		inorder(node->left);
+//        cout << node->item.getName();
+//        if (node->item.getCopies() > 1) {
+//            cout << " (Copies: " << node->item.getCopies() << ")";
+//        }
+//        cout << endl;
+//		inorder(node->right);
+//	}
+//}
+
+//Shein-Tested: Modified inorder to only show available games
+void GameList::inorder(BinaryNode * node) const {
+    if (node == nullptr) {
+        return;
+    }
+
+    inorder(node->left);
+
+    int copies = node->item.getCopies();
+    if (copies > 0) { // only show games that are currently available
         cout << node->item.getName();
-        if (node->item.getCopies() > 1) {
-            cout << " (Copies: " << node->item.getCopies() << ")";
+        if (copies > 1) {
+            cout << " (Copies: " << copies << ")";
         }
         cout << endl;
-		inorder(node->right);
-	}
+    }
+
+    inorder(node->right);
 }
