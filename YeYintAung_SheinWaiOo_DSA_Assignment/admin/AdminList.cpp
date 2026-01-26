@@ -1,8 +1,3 @@
-//#include "AdminList.h"
-//
-//AdminList::AdminList() {}
-
-//Shein-Tested For Temporary Completion
 #include "AdminList.h"
 
 AdminList::AdminList() : firstNode(nullptr), size(0) {

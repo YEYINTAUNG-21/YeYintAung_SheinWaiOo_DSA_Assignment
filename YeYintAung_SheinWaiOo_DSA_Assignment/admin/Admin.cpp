@@ -1,8 +1,3 @@
-//#include "Admin.h"
-//
-//Admin::Admin() {}
-
-//Shein-Tested For Temporary Completion
 #include "Admin.h"
 
 Admin::Admin() : adminId(""), name("") {

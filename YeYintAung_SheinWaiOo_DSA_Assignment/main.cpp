@@ -176,7 +176,6 @@ int main()
     } while (choice != 0);
 }
 
-
 //int main() {
 //    GameList gameList;
 //    MemberList memberList;
