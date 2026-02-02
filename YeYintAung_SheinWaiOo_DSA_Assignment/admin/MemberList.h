@@ -31,4 +31,8 @@ public:
 
 	bool exists(const string& memberId) const;   
 	string getMemberName(const string& memberId) const;
+	Member* searchMemberById(const string& id);
+	void displayAllMembers() const;
+	void loadFromCSV(const string& filename);
+	void saveToCSV(const string& filename) const;
 };

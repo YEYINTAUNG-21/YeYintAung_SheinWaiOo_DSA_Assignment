@@ -1,4 +1,8 @@
 #include "GameList.h"
+#include<string>
+#include <fstream>
+#include<iostream>
+using namespace std;
 
 GameList::GameList() {
 	root = nullptr;
@@ -16,6 +20,29 @@ void GameList::addGame() {
 
     cout << "Enter game name: ";
     getline(cin, name);
+    Game* existing = searchGameByName(name);
+    if (existing != nullptr) {
+        cout << "Game already exists with "
+            << existing->getCopies() << " copies.\n";
+        cout << "How many copies do you want to add? (0 to cancel): ";
+
+        int add;
+        cin >> add;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (add > 0) {
+            for (int i = 0; i < add; i++) {
+                existing->increaseCopies();
+            }
+            cout << "Copies updated. Total copies: "
+                << existing->getCopies() << endl;
+            saveToCSV("data/games.csv");
+        }
+        else {
+            cout << "No copies added.\n";
+        }
+        return;
+    }
     cout << "Enter minimum player: ";
     cin >> minP;
     cout << "Enter maximum player: ";
@@ -24,33 +51,62 @@ void GameList::addGame() {
     cin >> minT;
     cout << "Enter maximum play time(min): ";
     cin >> maxT;
-    cout << "Enter year published(min): ";
+    cout << "Enter year published: ";
     cin >> year;
 
     Game game(name, minP, maxP, minT, maxT, year);
     insertGame(game);
+    displayAllGames();
     cout << "Game added successfully" << endl;
+    saveToCSV("data/games.csv");
 }
 
 void GameList::removeGame() {
+    displayAllGames();
     string name;
-    cout << "Enter game name to remove: " << flush;
+    cout << "Enter game name to remove: ";
     getline(cin, name);
 
     Game* game = searchGameByName(name);
     if (game == nullptr) {
-        cout << "Game not found" << endl;
+        cout << "Game not found.\n";
         return;
     }
-    if (game->getCopies() > 1) {
-        game->decreaseCopies();
-        cout << "One copy removed. Remaining copies: " << game->getCopies() << endl;
+
+    int copies = game->getCopies();
+    if (copies > 1) {
+        cout << "Game has " << copies << " copies.\n";
+        cout << "How many copies do you want to delete? (0 to cancel): ";
+
+        int del;
+        cin >> del;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (del <= 0) {
+            cout << "Deletion cancelled.\n";
+            return;
+        }
+
+        if (del >= copies) {
+            root = remove(root, name);
+            cout << "All copies removed. Game deleted.\n";
+        }
+        else {
+            for (int i = 0; i < del; i++) {
+                game->decreaseCopies();
+            }
+            cout << "Copies remaining: "
+                << game->getCopies() << endl;
+        }
     }
     else {
         root = remove(root, name);
-        cout << "Game removed successfully" << endl;
+        displayAllGames();
+        cout << "Game removed successfully.\n";
     }
+    saveToCSV("data/games.csv");
 }
+
 
 GameList::BinaryNode* GameList::remove(BinaryNode* node, const string& gameName) {
     if (node == nullptr) {
@@ -175,4 +231,31 @@ void GameList::inorder(BinaryNode * node) const {
     }
 
     inorder(node->right);
+}
+
+void GameList::saveInOrder(BinaryNode* node, ofstream& file) const {
+    if (!node) return;
+
+    saveInOrder(node->left, file);
+
+    Game& g = node->item;
+    for (int i = 0; i < g.getCopies(); i++) {
+        file << "\"" << g.getName() << "\"" << ","
+            << g.getMinPlayer() << ","
+            << g.getMaxPlayer() << ","
+            << g.getMinPlayTime() << ","
+            << g.getMaxPlayTime() << ","
+            << g.getYearPublished() << "\n";
+    }
+
+    saveInOrder(node->right, file);
+}
+
+void GameList::saveToCSV(const std::string& filename) const {
+    std::ofstream file(filename, ios::out | ios::trunc);
+    if (!file.is_open()) return;
+
+    file << "name,minPlayers,maxPlayers,minTime,maxTime,year\n";
+    saveInOrder(root, file);
+    file.close();
 }

@@ -24,11 +24,11 @@ public:
 	Game(const string& name, int minP, int maxP, int minT, int maxT, int year);
 
 	string getName() const;
-	string getMinPlayer() const;
-	string getMaxPlayer() const;
-	string getMinPlayTime() const;
-	string getMaxPlayTime() const;
-	string getYearPublished() const;
+	int getMinPlayer() const;
+	int getMaxPlayer() const;
+	int getMinPlayTime() const;
+	int getMaxPlayTime() const;
+	int getYearPublished() const;
 	int getCopies() const;
 	void increaseCopies();
 	bool decreaseCopies();

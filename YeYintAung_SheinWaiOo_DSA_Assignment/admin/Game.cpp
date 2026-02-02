@@ -22,6 +22,27 @@ string Game::getName() const {
 	return gameName;
 }
 
+int Game::getMinPlayer() const {
+	return minPlayers;
+}
+
+int Game::getMaxPlayer() const {
+	return maxPlayers;
+}
+
+int Game::getMinPlayTime() const {
+	return minPlayTime;
+}
+
+int Game::getMaxPlayTime() const {
+	return maxPlayTime;
+}
+
+int Game::getYearPublished() const {
+	return yearPublished;
+}
+
+
 int Game::getCopies() const {
 	return copies;
 }
