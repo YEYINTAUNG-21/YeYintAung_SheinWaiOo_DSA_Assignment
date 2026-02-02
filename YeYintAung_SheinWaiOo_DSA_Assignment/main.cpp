@@ -116,10 +116,9 @@ int main()
     adminList.addAdmin("A100", "YYA");
     adminList.addAdmin("A200", "SWO");
 
-    //Shein - Seed admin-created members for testing(no self-registration) 
-    memberList.addMember("M100", "Alice");
-    memberList.addMember("M200", "Bob");
-    memberList.addMember("M300", "Charlie");
+    CSVReader::loadGame("data/games.csv", gameList);
+    CSVReader::loadMember("data/members.csv", memberList);
+    CSVReader::loadBorrow("data/borrows.csv", borrowList, memberList, gameList);
 
     CSVReader::loadGame("games.csv", gameList);
     
@@ -128,7 +127,7 @@ int main()
         cout << "--- Board Game System ---\n";
         cout << "1. Admin Login\n";
         cout << "2. Member Login\n";
-        cout << "3. Exit\n";
+        cout << "0. Exit\n";
         cout << "Enter Choice: ";
         cin >> choice;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue

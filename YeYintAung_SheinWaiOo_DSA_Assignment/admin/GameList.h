@@ -5,6 +5,7 @@ Student ID - S10268975C
 */
 #pragma once
 #include<string>
+#include <fstream>
 #include<iostream>
 #include "Game.h"
 using namespace std;
@@ -25,6 +26,7 @@ private:
 	BinaryNode* search(BinaryNode* node, const string& gameName) const;
 	BinaryNode* remove(BinaryNode* node, const string& gameName);
 	void inorder(BinaryNode* node) const;
+	void saveInOrder(BinaryNode* node, ofstream& file) const;
 
 public:
 	GameList();
@@ -35,4 +37,5 @@ public:
 	void insertGame(const Game& game);
 	Game* searchGameByName(const string& gameName) const;
 	void displayAllGames() const;
+	void saveToCSV(const std::string& filename) const;
 };

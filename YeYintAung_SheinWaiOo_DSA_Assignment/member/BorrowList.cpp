@@ -117,3 +117,9 @@ void BorrowList::displayAllBorrowSummary() const {
         curr = curr->next;
     }
 }
+
+void BorrowList::addRecord(const BorrowRecord& record) {
+    Node* newNode = new Node{ record, head };
+    head = newNode;
+}
+

@@ -139,11 +139,11 @@
     <ClCompile Include="utils\CSVReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\games.csv">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-    </None>
     <None Include=".gitignore" />
     <None Include="CONTRIBUTING.md" />
+    <None Include="data\borrows.csv" />
+    <None Include="data\games.csv" />
+    <None Include="data\members.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin\Admin.h" />
