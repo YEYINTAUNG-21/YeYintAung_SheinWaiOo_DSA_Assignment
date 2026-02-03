@@ -69,8 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="..\..\games.csv" />
     <None Include="CONTRIBUTING.md" />
+    <None Include="data\borrows.csv" />
+    <None Include="data\games.csv" />
+    <None Include="data\members.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

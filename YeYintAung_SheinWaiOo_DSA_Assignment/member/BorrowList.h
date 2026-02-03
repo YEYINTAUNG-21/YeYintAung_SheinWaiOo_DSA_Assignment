@@ -24,12 +24,12 @@ public:
     ~BorrowList();
 
     // Member operations
-    void borrowGame(const std::string& memberId,
+    bool borrowGame(const std::string& memberId,
                     const std::string& gameName,
 		            const MemberList& memberList,
                     GameList& gameList);
 
-    void returnGame(const std::string& memberId,
+    bool returnGame(const std::string& memberId,
                     const std::string& gameName,
                     GameList& gameList);
 
