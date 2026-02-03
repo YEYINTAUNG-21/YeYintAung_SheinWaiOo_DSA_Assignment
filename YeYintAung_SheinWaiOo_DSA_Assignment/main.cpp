@@ -70,17 +70,25 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         switch (choice) {
         case 1: {
             string gameName;
+			gameList.displayAllGames();
             cout << "Enter game name to borrow: ";
 			getline(cin, gameName);
-            borrowList.borrowGame(memberId, gameName, memberList, gameList);
+            if (borrowList.borrowGame(memberId, gameName, memberList, gameList)) {
+                gameList.displayAllGames();
+				cout << "Borrowed successfully.\n";
+            }
             break;
         }
 
         case 2: {
             string gameName;
+			gameList.displayAllGames();
 			cout << "Enter game name to return: ";
 			getline(cin, gameName);
-            borrowList.returnGame(memberId, gameName, gameList);
+            if (borrowList.returnGame(memberId, gameName, gameList)) {
+                gameList.displayAllGames();
+				cout << "Returned successfully.\n";
+            }
             break;
         }
 

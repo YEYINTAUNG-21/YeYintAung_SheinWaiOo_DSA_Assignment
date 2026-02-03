@@ -1,5 +1,7 @@
 #include "BorrowList.h"
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 BorrowList::BorrowList() : head(nullptr) {
     // Initialize empty linked list for borrow records
@@ -30,25 +32,25 @@ BorrowList::Node* BorrowList::findActiveBorrow(const std::string& memberId, cons
     return nullptr;
 }
 
-void BorrowList::borrowGame(const std::string& memberId,
+bool BorrowList::borrowGame(const std::string& memberId,
                             const std::string& gameName,
                             const MemberList& memberList,
                             GameList& gameList) {
     // Validate the member exists before recording a borrow
     if (!memberList.exists(memberId)) {
         std::cout << "Member not found.\n";
-        return;
+        return false;
     }
 
     // Check game exists and has available copies
     Game* game = gameList.searchGameByName(gameName);
     if (game == nullptr) {
         std::cout << "Game not found.\n";
-        return;
+        return false;
     }
     if (game->getCopies() <= 0) {
         std::cout << "No available copies.\n";
-        return;
+        return false;
     }
 
     // Decrement copy count
@@ -58,17 +60,21 @@ void BorrowList::borrowGame(const std::string& memberId,
     Node* newNode = new Node{ BorrowRecord(memberId, gameName), head };
     head = newNode;
 
+    saveToCSV("data/borrows.csv");
+    gameList.saveToCSV("data/games.csv");
+
     std::cout << "Borrowed successfully.\n";
+    return true;
 }
 
-void BorrowList::returnGame(const std::string& memberId,
+bool BorrowList::returnGame(const std::string& memberId,
                             const std::string& gameName,
                             GameList& gameList) {
     // Locate an active borrow for this member/game
     Node* node = findActiveBorrow(memberId, gameName);
     if (node == nullptr) {
         std::cout << "No active borrow found for this member/game.\n";
-        return;
+        return false;
     }
 
     // Mark as returned
@@ -80,7 +86,12 @@ void BorrowList::returnGame(const std::string& memberId,
         game->increaseCopies();
     }
 
-    std::cout << "Returned successfully.\n";
+	// Persist changes
+	saveToCSV("data/borrows.csv");
+	gameList.saveToCSV("data/games.csv");
+
+    /*std::cout << "Returned successfully.\n";*/
+    return true;
 }
 
 void BorrowList::displayMemberSummary(const std::string& memberId) const {
@@ -123,3 +134,50 @@ void BorrowList::addRecord(const BorrowRecord& record) {
     head = newNode;
 }
 
+//void BorrowList::loadFromCSV(const string& filename) {
+//    std::ifstream file(filename);
+//    if (!file.is_open()) {
+//        std::cout << "Unable to open " << filename << "\n";
+//        return;
+//    }
+//
+//    std::string line;
+//    std::getline(file, line); //header
+//
+//    while (std::getline(file, line)) {
+//        if (line.empty()) continue;
+//
+//        std::string memberId, gameName;
+//        int returned = 0;
+//
+//        std::stringstream ss(line);
+//        std::getline(ss, memberId, ',');
+//        std::getline(ss, gameName, ',');
+//        ss >> returned;
+//
+//        BorrowRecord record(memberId, gameName);
+//        if (returned == 1) {
+//            record.markReturned();
+//        }
+//
+//        addRecord(record);
+//    }
+//    file.close();
+//}
+
+void BorrowList::saveToCSV(const string& filename) {
+    std::ofstream file(filename, std::ios::out | std::ios::trunc);
+    if (!file.is_open()) return;
+
+    file << "memberId,gameName,returned\n";
+
+    Node* curr = head;
+    while (curr != nullptr) {
+        file << curr->data.getMemberId() << ","
+            << curr->data.getGameName() << ","
+            << (curr->data.isReturned() ? 1 : 0) << "\n";
+        curr = curr->next;
+    }
+
+    file.close();
+}
