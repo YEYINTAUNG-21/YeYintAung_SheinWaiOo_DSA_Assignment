@@ -108,31 +108,31 @@ void MemberList::displayAllMembers() const {
 }
 
 // ===== LOAD CSV =====
-void MemberList::loadFromCSV(const string& filename) {
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cout << "Unable to open " << filename << endl;
-        return;
-    }
-
-    string line;
-    getline(file, line); // header
-
-    while (getline(file, line)) {
-        if (line.empty()) continue;
-
-        int comma = line.find(',');
-        if (comma == string::npos) continue;
-
-        string id = line.substr(0, comma);
-        string name = line.substr(comma + 1);
-
-        addMember(id, name);
-    }
-
-    file.close();
-    cout << "Members loaded successfully from " << filename << endl;
-}
+//void MemberList::loadFromCSV(const string& filename) {
+//    ifstream file(filename);
+//    if (!file.is_open()) {
+//        cout << "Unable to open " << filename << endl;
+//        return;
+//    }
+//
+//    string line;
+//    getline(file, line); // header
+//
+//    while (getline(file, line)) {
+//        if (line.empty()) continue;
+//
+//        int comma = line.find(',');
+//        if (comma == string::npos) continue;
+//
+//        string id = line.substr(0, comma);
+//        string name = line.substr(comma + 1);
+//
+//        addMember(id, name);
+//    }
+//
+//    file.close();
+//    cout << "Members loaded successfully from " << filename << endl;
+//}
 
 void MemberList::saveToCSV(const string& filename) const {
     ofstream file(filename);

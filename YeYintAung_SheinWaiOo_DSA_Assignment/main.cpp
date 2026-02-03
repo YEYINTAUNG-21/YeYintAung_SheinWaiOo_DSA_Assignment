@@ -5,6 +5,7 @@
 #include "admin/MemberList.h"
 #include "member/BorrowList.h"
 #include "utils/CSVReader.h"
+#include "member/RatingList.h"
 using namespace std;
 
 void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
@@ -54,14 +55,15 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
     } while (choice != 0);
 }
 
-void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, const string& memberId) {
+void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, RatingList& ratingList, const string& memberId) {
     cout << "Welcome, " << memberList.getMemberName(memberId) << "!\n";
     int choice;
     do {
         cout << "1. Borrow a board game\n";
         cout << "2. Return a board game\n";
         cout << "3. Display my borrow/return summary\n";
-		cout << "4. Show all games (debug)\n"; // Shein-Tested debug option to show all games
+		cout << "4. Rate and review a board game\n";
+		cout << "5. Show all games (debug)\n"; // Shein-Tested debug option to show all games
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
@@ -96,8 +98,15 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
             borrowList.displayMemberSummary(memberId);
             break;
         }
-
+        
         case 4: {
+            cout << "Enter Member ID: " << memberId << "\n";
+            if (ratingList.addReview(memberId, memberList, gameList)) {
+            }
+            break;
+        }
+
+        case 5: {
 			gameList.displayAllGames(); // Shein-Tested debug option to show all games
             break;
         }
@@ -120,6 +129,7 @@ int main()
     MemberList memberList;
     BorrowList borrowList;
     AdminList adminList;
+	RatingList ratingList;
 
     adminList.addAdmin("A100", "YYA");
     adminList.addAdmin("A200", "SWO");
@@ -127,8 +137,7 @@ int main()
     CSVReader::loadGame("data/games.csv", gameList);
     CSVReader::loadMember("data/members.csv", memberList);
     CSVReader::loadBorrow("data/borrows.csv", borrowList, memberList, gameList);
-
-    CSVReader::loadGame("games.csv", gameList);
+    CSVReader::loadReview("data/reviews.csv", ratingList);
     
     int choice;
     do {
@@ -163,7 +172,7 @@ int main()
             cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
             if (memberList.exists(memberId)) {
                 cout << "Member login successful.\n";
-                memberMenu(gameList, borrowList, memberList, memberId);
+                memberMenu(gameList, borrowList, memberList, ratingList, memberId);
             }
             else {
                 cout << "Member not found.\n";

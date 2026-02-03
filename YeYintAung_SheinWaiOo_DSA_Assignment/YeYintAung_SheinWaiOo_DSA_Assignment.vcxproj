@@ -144,6 +144,7 @@
     <None Include="data\borrows.csv" />
     <None Include="data\games.csv" />
     <None Include="data\members.csv" />
+    <None Include="data\reviews.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="admin\Admin.h" />

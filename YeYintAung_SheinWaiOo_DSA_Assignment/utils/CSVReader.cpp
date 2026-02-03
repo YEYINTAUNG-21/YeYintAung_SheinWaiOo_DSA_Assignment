@@ -150,3 +150,34 @@ void CSVReader::loadBorrow(const string& filename,
     file.close();
     cout << "Borrow records loaded successfully from " << filename << endl;
 }
+
+void CSVReader::loadReview(const string& filename, RatingList& ratingList) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Unable to open" << filename << endl;
+        return;
+    }
+
+    string line;
+    getline(file, line); // header
+
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        string memberId, gameName, ratingStr, comment;
+        stringstream ss(line);
+
+        getline(ss, memberId, ',');
+        getline(ss, gameName, ',');
+        getline(ss, ratingStr, ',');
+        getline(ss, comment);
+
+        if (memberId.empty() || gameName.empty() || ratingStr.empty()) continue;
+
+        int ratingValue = stoi(ratingStr);
+        ratingList.addRecord(Rating(memberId, gameName, ratingValue, comment));
+    }
+
+    file.close();
+    cout << "Reviews loaded successfully from " << filename << endl;
+}
