@@ -259,3 +259,18 @@ void GameList::saveToCSV(const std::string& filename) const {
     saveInOrder(root, file);
     file.close();
 }
+
+void GameList::inorderCollect(BinaryNode* node, vector<Game*>& games) const {
+    if (node == nullptr) {
+        return;
+    }
+
+    inorderCollect(node->left, games);
+    games.push_back(&node->item);
+    inorderCollect(node->right, games);
+}
+
+void GameList::collectGames(vector<Game*>& games) const {
+    games.clear();
+    inorderCollect(root, games);
+}

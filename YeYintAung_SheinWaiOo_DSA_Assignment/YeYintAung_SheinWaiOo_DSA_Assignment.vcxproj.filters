@@ -74,6 +74,7 @@
     <None Include="data\games.csv" />
     <None Include="data\members.csv" />
     <None Include="data\reviews.csv" />
+    <None Include="data\averageRating.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">

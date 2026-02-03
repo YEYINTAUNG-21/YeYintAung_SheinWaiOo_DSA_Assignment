@@ -141,6 +141,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="CONTRIBUTING.md" />
+    <None Include="data\averageRating.csv" />
     <None Include="data\borrows.csv" />
     <None Include="data\games.csv" />
     <None Include="data\members.csv" />

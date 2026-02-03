@@ -1,6 +1,7 @@
 #include "RatingList.h"
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 
 RatingList::RatingList() : head(nullptr) {
 }
@@ -110,6 +111,7 @@ bool RatingList::addReview(const string& memberId, const MemberList& memberList,
     if (existing != nullptr) {
         existing->data = Rating(memberId, gameName, ratingValue, comment);
         saveToCSV("data/reviews.csv");
+		updateAverageRatings("data/averageRating.csv"); // Update average ratings after review update
 
         cout << "Your rating and review have been updated successfully.\n";
         cout << "Updated review:\n";
@@ -122,6 +124,7 @@ bool RatingList::addReview(const string& memberId, const MemberList& memberList,
 
     addRecord(Rating(memberId, gameName, ratingValue, comment));
     saveToCSV("data/reviews.csv");
+	updateAverageRatings("data/averageRating.csv"); // Update average ratings after new review
 
     cout << "Review submitted successfully.\n";
     return true;
@@ -144,4 +147,94 @@ void RatingList::saveToCSV(const string& filename) const {
     }
 
     file.close();
+}
+
+void RatingList::updateAverageRatings(const string& filename) const {
+    struct AvgNode {
+        string gameName;
+        int totalRating;
+        int count;
+        AvgNode* next;
+    };
+
+    AvgNode* avgHead = nullptr;
+
+    Node* curr = head;
+    while (curr != nullptr) {
+        AvgNode* a = avgHead;
+        while (a != nullptr && a->gameName != curr->data.getGameName()) {
+            a = a->next;
+        }
+        if (a == nullptr) {
+            avgHead = new AvgNode{ curr->data.getGameName(), 0, 0, avgHead };
+            a = avgHead;
+        }
+        a->totalRating += curr->data.getRating();
+        a->count += 1;
+
+        curr = curr->next;
+    }
+
+    ofstream file(filename, ios::out | ios::trunc);
+    if (!file.is_open()) return;
+
+    file << "gameName,averageRating,totalReviews\n";
+
+    AvgNode* a = avgHead;
+    while (a != nullptr) {
+        double avg = static_cast<double>(a->totalRating) / a->count;
+        file << a->gameName << ","
+            << fixed << setprecision(2) << avg << ","
+            << a->count << "\n";
+        a = a->next;
+    }
+
+    file.close();
+
+    while (avgHead != nullptr) {
+        AvgNode* toDelete = avgHead;
+        avgHead = avgHead->next;
+        delete toDelete;
+    }
+}
+
+void RatingList::getRatingSummary(const string& gameName, double& average, int& total) const {
+    int sum = 0;
+    total = 0;
+
+    Node* curr = head;
+    while (curr != nullptr) {
+        if (curr->data.getGameName() == gameName) {
+            sum += curr->data.getRating();
+            total += 1;
+        }
+        curr = curr->next;
+    }
+
+    if (total > 0) {
+        average = static_cast<double>(sum) / total;
+    }
+    else {
+        average = 0.0;
+    }
+}
+
+void RatingList::displayReviews(const string& gameName, const MemberList& memberList) const {
+    bool any = false;
+    Node* curr = head;
+    while (curr != nullptr) {
+        if (curr->data.getGameName() == gameName) {
+            any = true;
+            string name = memberList.getMemberName(curr->data.getMemberId());
+            string comment = curr->data.getComment();
+            if (comment.empty()) {
+                comment = "(no comment)";
+            }
+            cout << "- " << name << ": \"" << comment << "\"\n";
+        }
+        curr = curr->next;
+    }
+    if (!any) {
+        cout << "No reviews yet.\n";
+    }
 }

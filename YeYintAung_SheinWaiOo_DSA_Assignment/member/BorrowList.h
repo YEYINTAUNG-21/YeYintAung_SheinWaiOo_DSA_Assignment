@@ -37,7 +37,6 @@ public:
 
     // Admin operation
     void displayAllBorrowSummary() const;
-    void loadFromCSV(const string& filename);
     void saveToCSV(const string& filename);
     void addRecord(const BorrowRecord& record);
 };

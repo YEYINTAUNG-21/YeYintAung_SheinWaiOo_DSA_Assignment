@@ -26,5 +26,8 @@ public:
     void addRecord(const Rating& rating);
     bool addReview(const string& memberId, const MemberList& memberList, const GameList& gameList);
     void saveToCSV(const string& filename) const;
+    void updateAverageRatings(const string& filename) const;
 
+    void getRatingSummary(const string& gameName, double& average, int& total) const;
+    void displayReviews(const string& gameName, const MemberList& memberList) const;
 };
