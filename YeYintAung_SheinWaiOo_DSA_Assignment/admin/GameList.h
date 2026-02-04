@@ -7,6 +7,7 @@ Student ID - S10268975C
 #include<string>
 #include <fstream>
 #include<iostream>
+#include <vector>
 #include "Game.h"
 using namespace std;
 
@@ -27,7 +28,7 @@ private:
 	BinaryNode* remove(BinaryNode* node, const string& gameName);
 	void inorder(BinaryNode* node) const;
 	void saveInOrder(BinaryNode* node, ofstream& file) const;
-
+	void inorderCollect(BinaryNode* node, vector<Game*>& games) const;
 public:
 	GameList();
 	~GameList();
@@ -38,4 +39,5 @@ public:
 	Game* searchGameByName(const string& gameName) const;
 	void displayAllGames() const;
 	void saveToCSV(const std::string& filename) const;
+	void collectGames(vector<Game*>& games) const;
 };

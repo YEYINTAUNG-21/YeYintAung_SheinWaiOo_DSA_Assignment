@@ -1,10 +1,14 @@
 #include <iostream>
 #include <limits>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
 #include "admin/AdminList.h"
 #include "admin/GameList.h"
 #include "admin/MemberList.h"
 #include "member/BorrowList.h"
 #include "utils/CSVReader.h"
+#include "member/RatingList.h"
 using namespace std;
 
 void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
@@ -54,14 +58,199 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
     } while (choice != 0);
 }
 
-void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, const string& memberId) {
+void viewGameDetails(GameList& gameList, RatingList& ratingList, MemberList& memberList) {
+    string gameName;
+
+    gameList.displayAllGames();
+    cout << "Enter game name to view details: ";
+    getline(cin, gameName);
+
+    Game* game = gameList.searchGameByName(gameName);
+    if (game == nullptr) {
+        cout << "Game not found.\n";
+        return;
+    }
+
+    double average = 0.0;
+    int total = 0;
+    ratingList.getRatingSummary(gameName, average, total);
+
+    cout << "========================================\n";
+    cout << "            GAME DETAILS\n";
+    cout << "========================================\n";
+    cout << "Title            : " << game->getName() << "\n";
+    cout << "Players          : " << game->getMinPlayer() << " - " << game->getMaxPlayer() << " players\n";
+    cout << "Play Time        : " << game->getMinPlayTime() << " - " << game->getMaxPlayTime() << " minutes\n";
+    cout << "Year             : " << game->getYearPublished() << "\n";
+    cout << "Available Copies : " << game->getCopies() << "\n\n";
+
+    cout << "----------------------------------------\n";
+    cout << "Rating Summary\n";
+    cout << "----------------------------------------\n";
+    if (total > 0) {
+        cout << "Average Rating   : " << fixed << setprecision(2) << average << " / 10\n";
+    }
+    else {
+        cout << "Average Rating   : Not available\n";
+    }
+    cout << "Total Reviews    : " << total << "\n\n";
+
+    cout << "----------------------------------------\n";
+    cout << "User Reviews\n";
+    cout << "----------------------------------------\n";
+    ratingList.displayReviews(gameName, memberList);
+    cout << "========================================\n";
+}
+
+void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
+    cout << "----------------------------------------\n";
+    cout << "Filter Games by Player Count\n";
+    cout << "----------------------------------------\n";
+
+    int players;
+    while (true) {
+        cout << "Enter number of players: ";
+        cin >> players;
+        if (cin.fail() || players <= 0) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a positive number.\n";
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        break;
+    }
+
+    cout << "How would you like the list to be sorted?\n";
+    cout << "[1] Year of publication (newest first)\n";
+    cout << "[2] Year of publication (oldest first)\n";
+    cout << "[3] Average rating (highest first)\n";
+    cout << "[4] Average rating (lowest first)\n";
+
+    int choice;
+    while (true) {
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter 1 to 4.\n";
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        if (choice >= 1 && choice <= 4) {
+            break;
+        }
+        cout << "Invalid choice. Please enter 1 to 4.\n";
+    }
+
+    vector<Game*> games;
+    gameList.collectGames(games);
+
+    struct GameView {
+        Game* game;
+        double average;
+        int total;
+    };
+
+    vector<GameView> filtered;
+    for (Game* g : games) {
+        if (g->getCopies() <= 0) {
+            continue;
+        }
+        if (players >= g->getMinPlayer() && players <= g->getMaxPlayer()) {
+            double avg = 0.0;
+            int total = 0;
+            ratingList.getRatingSummary(g->getName(), avg, total);
+            filtered.push_back(GameView{ g, avg, total });
+        }
+    }
+
+    if (filtered.empty()) {
+        cout << "No games found for " << players << " players.\n";
+        return;
+    }
+
+    auto avgForDesc = [](const GameView& v) {
+        return (v.total == 0) ? -1.0 : v.average;
+        };
+    auto avgForAsc = [](const GameView& v) {
+        return (v.total == 0) ? 11.0 : v.average;
+        };
+
+    switch (choice) {
+    case 1:
+        sort(filtered.begin(), filtered.end(), [](const GameView& a, const GameView& b) {
+            if (a.game->getYearPublished() == b.game->getYearPublished()) {
+                return a.game->getName() < b.game->getName();
+            }
+            return a.game->getYearPublished() > b.game->getYearPublished();
+            });
+        break;
+    case 2:
+        sort(filtered.begin(), filtered.end(), [](const GameView& a, const GameView& b) {
+            if (a.game->getYearPublished() == b.game->getYearPublished()) {
+                return a.game->getName() < b.game->getName();
+            }
+            return a.game->getYearPublished() < b.game->getYearPublished();
+            });
+        break;
+    case 3:
+        sort(filtered.begin(), filtered.end(), [&](const GameView& a, const GameView& b) {
+            double av = avgForDesc(a);
+            double bv = avgForDesc(b);
+            if (av == bv) {
+                return a.game->getName() < b.game->getName();
+            }
+            return av > bv;
+            });
+        break;
+    case 4:
+        sort(filtered.begin(), filtered.end(), [&](const GameView& a, const GameView& b) {
+            double av = avgForAsc(a);
+            double bv = avgForAsc(b);
+            if (av == bv) {
+                return a.game->getName() < b.game->getName();
+            }
+            return av < bv;
+            });
+        break;
+    }
+
+    cout << "========================================\n";
+    cout << "Games playable by " << players << " players\n";
+    cout << "========================================\n";
+
+    for (size_t i = 0; i < filtered.size(); ++i) {
+        const GameView& v = filtered[i];
+        cout << "[" << (i + 1) << "] " << v.game->getName()
+            << " (" << v.game->getYearPublished() << ")\n";
+        cout << "  Players         : " << v.game->getMinPlayer() << " - "
+            << v.game->getMaxPlayer() << "\n";
+        if (v.total > 0) {
+            cout << "  Avg Rating      : " << fixed << setprecision(2)
+                << v.average << " / 10\n";
+        }
+        else {
+            cout << "  Avg Rating      : Not rated yet\n";
+        }
+        cout << "  Available Copies: " << v.game->getCopies() << "\n\n";
+    }
+
+    cout << "Total games found: " << filtered.size() << "\n";
+    cout << "========================================\n";
+}
+
+void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, RatingList& ratingList, const string& memberId) {
     cout << "Welcome, " << memberList.getMemberName(memberId) << "!\n";
     int choice;
     do {
         cout << "1. Borrow a board game\n";
         cout << "2. Return a board game\n";
         cout << "3. Display my borrow/return summary\n";
-		cout << "4. Show all games (debug)\n"; // Shein-Tested debug option to show all games
+        cout << "4. View game details\n";
+        cout << "5. Filter games by player count\n";
+		cout << "6. Rate and review a board game\n";
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
@@ -98,7 +287,19 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         }
 
         case 4: {
-			gameList.displayAllGames(); // Shein-Tested debug option to show all games
+            viewGameDetails(gameList, ratingList, memberList);
+            break;
+		}
+
+        case 5: {
+            displayGamesByPlayers(gameList, ratingList);
+            break;
+        }
+
+        case 6: {
+            cout << "Enter Member ID: " << memberId << "\n";
+            if (ratingList.addReview(memberId, memberList, gameList)) {
+            }
             break;
         }
 
@@ -120,6 +321,7 @@ int main()
     MemberList memberList;
     BorrowList borrowList;
     AdminList adminList;
+	RatingList ratingList;
 
     adminList.addAdmin("A100", "YYA");
     adminList.addAdmin("A200", "SWO");
@@ -127,8 +329,7 @@ int main()
     CSVReader::loadGame("data/games.csv", gameList);
     CSVReader::loadMember("data/members.csv", memberList);
     CSVReader::loadBorrow("data/borrows.csv", borrowList, memberList, gameList);
-
-    CSVReader::loadGame("games.csv", gameList);
+    CSVReader::loadReview("data/reviews.csv", ratingList);
     
     int choice;
     do {
@@ -163,7 +364,7 @@ int main()
             cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
             if (memberList.exists(memberId)) {
                 cout << "Member login successful.\n";
-                memberMenu(gameList, borrowList, memberList, memberId);
+                memberMenu(gameList, borrowList, memberList, ratingList, memberId);
             }
             else {
                 cout << "Member not found.\n";

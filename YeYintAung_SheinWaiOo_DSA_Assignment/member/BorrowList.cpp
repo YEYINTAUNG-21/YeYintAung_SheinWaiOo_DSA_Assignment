@@ -134,37 +134,6 @@ void BorrowList::addRecord(const BorrowRecord& record) {
     head = newNode;
 }
 
-//void BorrowList::loadFromCSV(const string& filename) {
-//    std::ifstream file(filename);
-//    if (!file.is_open()) {
-//        std::cout << "Unable to open " << filename << "\n";
-//        return;
-//    }
-//
-//    std::string line;
-//    std::getline(file, line); //header
-//
-//    while (std::getline(file, line)) {
-//        if (line.empty()) continue;
-//
-//        std::string memberId, gameName;
-//        int returned = 0;
-//
-//        std::stringstream ss(line);
-//        std::getline(ss, memberId, ',');
-//        std::getline(ss, gameName, ',');
-//        ss >> returned;
-//
-//        BorrowRecord record(memberId, gameName);
-//        if (returned == 1) {
-//            record.markReturned();
-//        }
-//
-//        addRecord(record);
-//    }
-//    file.close();
-//}
-
 void BorrowList::saveToCSV(const string& filename) {
     std::ofstream file(filename, std::ios::out | std::ios::trunc);
     if (!file.is_open()) return;
