@@ -9,17 +9,21 @@ using namespace std;
 
 class RatingList
 {
-private:
+public: // need for recommendation feature
     struct Node {
         Rating data;
         Node* next;
     };
 
+private:
     Node* head;
 
     Node* findReview(const string& memberId, const string& gameName);
 
 public:
+
+    Node* getHead() const;// need for recommendation feature
+
     RatingList();
     ~RatingList();
 

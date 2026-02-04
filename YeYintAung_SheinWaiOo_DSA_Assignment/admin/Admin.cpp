@@ -1,9 +1,13 @@
 #include "Admin.h"
 
-Admin::Admin() : adminId(""), name("") {
+Admin::Admin() {
+    adminId = "";
+    name = "";
 }
 
-Admin::Admin(const string& id, const string& name) : adminId(id), name(name) {
+Admin::Admin(const string& id, const string& adminName) {
+    adminId = id;
+    name = adminName;
 }
 
 string Admin::getId() const {

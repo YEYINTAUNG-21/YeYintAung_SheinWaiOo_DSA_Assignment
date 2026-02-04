@@ -129,13 +129,12 @@
     <ClCompile Include="admin\GameList.cpp" />
     <ClCompile Include="admin\Member.cpp" />
     <ClCompile Include="admin\MemberList.cpp" />
-    <ClCompile Include="admin\PlayRecord.cpp" />
-    <ClCompile Include="admin\PlayRecordList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="member\BorrowList.cpp" />
     <ClCompile Include="member\BorrowRecord.cpp" />
     <ClCompile Include="member\Rating.cpp" />
     <ClCompile Include="member\RatingList.cpp" />
+    <ClCompile Include="member\Recommendation.cpp" />
     <ClCompile Include="utils\CSVReader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,12 +153,11 @@
     <ClInclude Include="admin\GameList.h" />
     <ClInclude Include="admin\Member.h" />
     <ClInclude Include="admin\MemberList.h" />
-    <ClInclude Include="admin\PlayRecord.h" />
-    <ClInclude Include="admin\PlayRecordList.h" />
     <ClInclude Include="member\BorrowList.h" />
     <ClInclude Include="member\BorrowRecord.h" />
     <ClInclude Include="member\Rating.h" />
     <ClInclude Include="member\RatingList.h" />
+    <ClInclude Include="member\Recommendation.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="utils\CSVReader.h" />
   </ItemGroup>
