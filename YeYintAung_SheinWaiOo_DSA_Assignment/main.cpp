@@ -251,7 +251,6 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         cout << "4. View game details\n";
         cout << "5. Filter games by player count\n";
 		cout << "6. Rate and review a board game\n";
-		cout << "7. Show all games (debug)\n"; // Shein-Tested debug option to show all games
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
@@ -301,11 +300,6 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
             cout << "Enter Member ID: " << memberId << "\n";
             if (ratingList.addReview(memberId, memberList, gameList)) {
             }
-            break;
-        }
-
-        case 7: {
-			gameList.displayAllGames(); // Shein-Tested debug option to show all games
             break;
         }
 
