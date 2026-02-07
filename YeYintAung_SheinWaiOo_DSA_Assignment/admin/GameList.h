@@ -33,8 +33,8 @@ public:
 	GameList();
 	~GameList();
 
-	void addGame();                       
-	void removeGame();                    
+	void addGame();
+	void removeGame();
 	void insertGame(const Game& game);
 	Game* searchGameByName(const string& gameName) const;
 	void displayAllGames() const;

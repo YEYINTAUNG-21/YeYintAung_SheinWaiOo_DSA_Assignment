@@ -9,6 +9,7 @@
 #include "member/BorrowList.h"
 #include "utils/CSVReader.h"
 #include "member/RatingList.h"
+#include "member/Recommendation.h"
 using namespace std;
 
 void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
@@ -251,6 +252,7 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         cout << "4. View game details\n";
         cout << "5. Filter games by player count\n";
 		cout << "6. Rate and review a board game\n";
+        cout << "7. Get game recommendations\n";
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
@@ -300,6 +302,23 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
             cout << "Enter Member ID: " << memberId << "\n";
             if (ratingList.addReview(memberId, memberList, gameList)) {
             }
+            break;
+        }
+
+        case 7: {
+            string gameName;
+
+            gameList.displayAllGames();
+            cout << "Enter a game you like: ";
+            getline(cin, gameName);
+
+            if (gameList.searchGameByName(gameName) == nullptr) {
+                cout << "Game not found. Please enter a valid game name.\n";
+                break;
+            }
+
+            Recommendation recommender(ratingList);
+            recommender.recommendGames(gameName);
             break;
         }
 

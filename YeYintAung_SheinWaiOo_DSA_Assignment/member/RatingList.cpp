@@ -3,6 +3,10 @@
 #include <sstream>
 #include <iomanip>
 
+RatingList::Node* RatingList::getHead() const { // need for recommendation
+    return head;
+}
+
 RatingList::RatingList() : head(nullptr) {
 }
 

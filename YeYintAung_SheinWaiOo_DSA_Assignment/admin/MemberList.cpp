@@ -6,12 +6,12 @@
 using namespace std;
 
 MemberList::MemberList() {
-    for (int i = 0; i < TABLE_SIZE; ++i)
+    for (int i = 0; i < MAX_MEMBERS; ++i)
         table[i] = nullptr;
 }
 
 MemberList::~MemberList() {
-    for (int i = 0; i < TABLE_SIZE; ++i) {
+    for (int i = 0; i < MAX_MEMBERS; ++i) {
         Node* curr = table[i];
         while (curr != nullptr) {
             Node* toDelete = curr;
@@ -25,7 +25,7 @@ int MemberList::hash(const string& memberId) const {
     unsigned long h = 0;
     for (char c : memberId)
         h = h * 131 + c;
-    return h % TABLE_SIZE;
+    return h % MAX_MEMBERS;
 }
 
 void MemberList::addMember() {
@@ -46,6 +46,7 @@ void MemberList::addMember() {
     addMember(id, name);
     saveToCSV("data/members.csv");
 
+    displayAllMembers();
     cout << "Member added successfully.\n";
 }
 
@@ -90,64 +91,90 @@ string MemberList::getMemberName(const string& memberId) const {
     return "Unknown Member";
 }
 
+void MemberList::mergeSort(Member members[], int n) {
+    mergeSort(members, 0, n - 1);
+}
+
+void MemberList::mergeSort(Member members[], int first, int last) {
+    if (first < last) {
+        int mid = (first + last) / 2;
+        mergeSort(members, first, mid);
+        mergeSort(members, mid + 1, last);
+        merge(members, first, mid, last);
+    }
+}
+
+void MemberList::merge(Member members[], int first, int mid, int last) {
+    int left1 = first;
+    int right1 = mid;
+    int left2 = mid + 1;
+    int right2 = last;
+    int index = first;
+
+    Member temp[MAX_MEMBERS];
+    while (left1 <= right1 && left2 <= right2) {
+        if (members[left1].getId() <= members[left2].getId()) {
+            temp[index++] = members[left1++];
+        }
+        else {
+            temp[index++] = members[left2++];
+        }
+    }
+    while (left1 <= right1) {
+        temp[index++] = members[left1++];
+    }
+    while (left2 <= right2) {
+        temp[index++] = members[left2++];
+    }
+    for (int i = first; i <= last; i++) {
+        members[i] = temp[i];
+    }
+}
+
 void MemberList::displayAllMembers() const {
-    bool empty = true;
-    for (int i = 0; i < TABLE_SIZE; ++i) {
+    cout << "===== Members List =====" << endl;
+    Member members[MAX_MEMBERS];
+    int count = 0;
+    for (int i = 0; i < MAX_MEMBERS; i++) {
         Node* curr = table[i];
-        while (curr) {
-            empty = false;
-            cout << curr->data.getId()
-                << " - "
-                << curr->data.getName()
-                << endl;
+        while (curr && count < MAX_MEMBERS) {
+            members[count++] = curr->data;
             curr = curr->next;
         }
     }
-    if (empty)
+    if (count == 0) {
         cout << "No members found.\n";
+        return;
+    }
+    mergeSort(members, count);
+    for (int i = 0; i < count; i++) {
+        cout << members[i].getId() << " - " << members[i].getName() << endl;
+    }
 }
 
-// ===== LOAD CSV =====
-//void MemberList::loadFromCSV(const string& filename) {
-//    ifstream file(filename);
-//    if (!file.is_open()) {
-//        cout << "Unable to open " << filename << endl;
-//        return;
-//    }
-//
-//    string line;
-//    getline(file, line); // header
-//
-//    while (getline(file, line)) {
-//        if (line.empty()) continue;
-//
-//        int comma = line.find(',');
-//        if (comma == string::npos) continue;
-//
-//        string id = line.substr(0, comma);
-//        string name = line.substr(comma + 1);
-//
-//        addMember(id, name);
-//    }
-//
-//    file.close();
-//    cout << "Members loaded successfully from " << filename << endl;
-//}
-
 void MemberList::saveToCSV(const string& filename) const {
-    ofstream file(filename);
-    if (!file.is_open()) return;
+    Member members[MAX_MEMBERS];
+    int count = 0;
 
-    file << "memberId,name\n";
-
-    for (int i = 0; i < TABLE_SIZE; ++i) {
+    for (int i = 0; i < MAX_MEMBERS; i++) {
         Node* curr = table[i];
-        while (curr) {
-            file << curr->data.getId() << ","
-                << curr->data.getName() << "\n";
+        while (curr && count < MAX_MEMBERS) {
+            members[count++] = curr->data;
             curr = curr->next;
         }
+    }
+    if (count == 0) {
+        return;
+    }
+    mergeSort(members, count);
+
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cout << "Enable to open file" << endl;
+    }
+    file << "memberId,name\n";
+    for (int i = 0; i < count; i++) {
+        file << members[i].getId() << "," << members[i].getName() << "\n";
     }
     file.close();
 }
-
