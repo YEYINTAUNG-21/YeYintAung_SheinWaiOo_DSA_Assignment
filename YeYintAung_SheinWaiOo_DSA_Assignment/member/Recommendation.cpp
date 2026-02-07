@@ -33,7 +33,7 @@ void Recommendation::recommendGames(const string& targetGameName) {
 	}
 
 	// Aggregate ratings for other games
-	GameScore score[MAX_GAMES];
+	GameScore* score = new GameScore[MAX_GAMES]; 
 	int scoreCount = 0;
 
 	curr = ratingList->getHead();
@@ -59,6 +59,7 @@ void Recommendation::recommendGames(const string& targetGameName) {
 	}
 	if (scoreCount == 0) {
 		cout << "No recommendations available.\n";
+		delete[] score;
 		return;
 	}
 
@@ -74,14 +75,23 @@ void Recommendation::recommendGames(const string& targetGameName) {
 	cout << "\nTop " << TOP_GAMES << " Recommended Games For You:\n";
 	cout << "----------------------------------\n";
 
-	int limit = (scoreCount < TOP_GAMES) ? scoreCount : TOP_GAMES;
-	for (int i = 0; i < limit; i++) {
-		cout << i + 1 << ". "
-			<< score[i].gameName
-			<< " (Avg Rating: "
-			<< score[i].average << ")" << endl;;
+	int shown = 0;
+
+	for (int i = 0; i < scoreCount && shown < TOP_GAMES; i++) {
+		if (score[i].average >= LIKE_THRESHOLD) {
+			cout << shown + 1 << ". "
+				<< score[i].gameName
+				<< " (Avg Rating: "
+				<< score[i].average << ")" << endl;
+			shown++;
+		}
+	}
+
+	if (shown == 0) {
+		cout << "No recommended games meet the rating threshold.\n";
 	}
 	cout << endl;
+	delete[] score;
 }
 
 void Recommendation::mergeSort(GameScore scores[], int n) {
@@ -104,7 +114,7 @@ void Recommendation::merge(GameScore scores[], int first, int mid, int last) {
 	int right1 = mid;
 	int left2 = mid + 1;
 	int right2 = last;
-	int index = first;
+	int index = 0;
 	while (left1 <= right1 && left2 <= right2) {
 		if (scores[left1].average > scores[left2].average) {
 			temp[index++] = scores[left1++];
@@ -113,12 +123,16 @@ void Recommendation::merge(GameScore scores[], int first, int mid, int last) {
 			temp[index++] = scores[left2++];
 		}
 	}
-	while (left1 <= right1)
+	while (left1 <= right1) {
 		temp[index++] = scores[left1++];
+	}
 
-	while (left2 <= right2)
+	while (left2 <= right2) {
 		temp[index++] = scores[left2++];
+	}
 
-	for (int i = first; i <= last; i++)
-		scores[i] = temp[i];
+	for (int i = 0; i < size; i++) {
+		scores[first + i] = temp[i];
+	}
+	delete[] temp;
 }

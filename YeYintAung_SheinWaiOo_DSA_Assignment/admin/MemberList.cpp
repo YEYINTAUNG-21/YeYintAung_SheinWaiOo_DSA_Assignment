@@ -146,6 +146,7 @@ void MemberList::displayAllMembers() const {
         cout << "No members found.\n";
         return;
     }
+    mergeSort(members, count);
     for (int i = 0; i < count; i++) {
         cout << members[i].getId() << " - " << members[i].getName() << endl;
     }

@@ -19,7 +19,7 @@ struct GameScore {
 class Recommendation {
 private:
 	RatingList* ratingList;
-	static const int LIKE_THRESHOLD = 6;
+	static const int LIKE_THRESHOLD = 5;
 	static const int TOP_GAMES = 5;
 	static const int MAX_MEMBERS = 1000;
 	static const int MAX_GAMES = 10000;
