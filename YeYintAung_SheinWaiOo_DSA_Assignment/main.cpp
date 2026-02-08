@@ -22,7 +22,7 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
         cout << "0. Logout\n";
         cout << "Enter Choice: ";
         cin >> choice;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1: {
@@ -252,8 +252,7 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
-
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice) {
         case 1: {
             string gameName;
@@ -280,7 +279,7 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         case 2: {
 
             // STEP 1: Display all active (not yet returned) borrow records
-    //      for the logged-in member to guide the return process
+            // for the logged-in member to guide the return process
             string gameName;
 			borrowList.displayActiveBorrows(memberId);
 
@@ -374,14 +373,14 @@ int main()
         cout << "0. Exit\n";
         cout << "Enter Choice: ";
         cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1: {
             string adminId;
             cout << "Enter Admin ID: ";
             cin >> adminId;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (adminList.login(adminId)) {
                 cout << "Admin login successful.\n";
                 adminMenu(gameList, memberList, borrowList, adminList, adminId);
@@ -396,7 +395,7 @@ int main()
             string memberId;
             cout << "Enter Member ID: ";
             cin >> memberId;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (memberList.exists(memberId)) {
                 cout << "Member login successful.\n";
                 memberMenu(gameList, borrowList, memberList, ratingList, memberId);
@@ -419,37 +418,3 @@ int main()
     } while (choice != 0);
 }
 
-//int main() {
-//    GameList gameList;
-//    MemberList memberList;
-//
-//    cout << "=== TEST: Load games from CSV ===\n";
-//    CSVReader::loadGame("games.csv", gameList);
-//
-//    cout << "\n=== TEST: Display All Games ===\n";
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== TEST: Search ===\n";
-//    Game* g = gameList.searchGameByName("Saboteur");
-//    if (g != nullptr) {
-//        cout << "found game: " << g->getName() << endl;
-//    }
-//    else {
-//        cout << "Game not found" << endl;
-//    }
-//
-//    cout << "\n=== TEST: remove ===" << endl;
-//    gameList.removeGame();
-//
-//    cout << "\n=== TEST: Display all games (after removal) ===" << endl;
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== TEST: manual add (duplicate) ===" << endl;
-//    gameList.addGame();
-//
-//    cout << "\n=== TEST: Display all games (after adding duplicate) ===" << endl;
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== END OF TEST ===" << endl;
-//    return 0;
-//}
