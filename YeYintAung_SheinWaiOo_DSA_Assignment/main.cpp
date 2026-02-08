@@ -22,7 +22,7 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
         cout << "0. Logout\n";
         cout << "Enter Choice: ";
         cin >> choice;
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1: {
@@ -252,15 +252,24 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         cout << "0. Back\n";
         cout << "Enter Choice: ";
         cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
-
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice) {
         case 1: {
             string gameName;
+            // STEP 1: Display all available games to the logged-in member
 			gameList.displayAllGames();
+            
+            // STEP 2: Prompt member to enter the game name they want to borrow
             cout << "Enter game name to borrow: ";
 			getline(cin, gameName);
+            
+            // STEP 3: Attempt to borrow the selected game
+            // - Validates member existence
+            // - Checks game availability
+            // - Records the borrow in a linked list
+            // - Updates game inventory
             if (borrowList.borrowGame(memberId, gameName, memberList, gameList)) {
+                // STEP 4: Display updated game list after successful borrow
                 gameList.displayAllGames();
 				cout << "Borrowed successfully.\n";
             }
@@ -268,10 +277,20 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         }
 
         case 2: {
+
+            // STEP 1: Display all active (not yet returned) borrow records
+            // for the logged-in member to guide the return process
             string gameName;
-			gameList.displayAllGames();
+			borrowList.displayActiveBorrows(memberId);
+
+            // STEP 2: Prompt the member to enter the game name to return
 			cout << "Enter game name to return: ";
 			getline(cin, gameName);
+            
+            //STEP 3: Attempt to return the specified game
+            // - Searches for an active borrow record in the linked list
+            // - Marks the borrow as returned
+            // - Restores the game's available copy count
             if (borrowList.returnGame(memberId, gameName, gameList)) {
                 gameList.displayAllGames();
 				cout << "Returned successfully.\n";
@@ -354,14 +373,14 @@ int main()
         cout << "0. Exit\n";
         cout << "Enter Choice: ";
         cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
         case 1: {
             string adminId;
             cout << "Enter Admin ID: ";
             cin >> adminId;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (adminList.login(adminId)) {
                 cout << "Admin login successful.\n";
                 adminMenu(gameList, memberList, borrowList, adminList, adminId);
@@ -376,7 +395,7 @@ int main()
             string memberId;
             cout << "Enter Member ID: ";
             cin >> memberId;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');// Shein-Tested to fix input issue
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             if (memberList.exists(memberId)) {
                 cout << "Member login successful.\n";
                 memberMenu(gameList, borrowList, memberList, ratingList, memberId);
@@ -399,37 +418,3 @@ int main()
     } while (choice != 0);
 }
 
-//int main() {
-//    GameList gameList;
-//    MemberList memberList;
-//
-//    cout << "=== TEST: Load games from CSV ===\n";
-//    CSVReader::loadGame("games.csv", gameList);
-//
-//    cout << "\n=== TEST: Display All Games ===\n";
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== TEST: Search ===\n";
-//    Game* g = gameList.searchGameByName("Saboteur");
-//    if (g != nullptr) {
-//        cout << "found game: " << g->getName() << endl;
-//    }
-//    else {
-//        cout << "Game not found" << endl;
-//    }
-//
-//    cout << "\n=== TEST: remove ===" << endl;
-//    gameList.removeGame();
-//
-//    cout << "\n=== TEST: Display all games (after removal) ===" << endl;
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== TEST: manual add (duplicate) ===" << endl;
-//    gameList.addGame();
-//
-//    cout << "\n=== TEST: Display all games (after adding duplicate) ===" << endl;
-//    gameList.displayAllGames();
-//
-//    cout << "\n=== END OF TEST ===" << endl;
-//    return 0;
-//}

@@ -3,6 +3,12 @@ Name: Shein Wai Oo
 Group - 3
 Student ID - S10269743C
 */
+// BorrowRecord represents a single borrowing transaction.
+// Each record stores:
+// - memberId: who borrowed the game
+// - gameName: which game was borrowed
+// - returned flag: whether the game has been returned
+
 #pragma once
 #include <string>
 
