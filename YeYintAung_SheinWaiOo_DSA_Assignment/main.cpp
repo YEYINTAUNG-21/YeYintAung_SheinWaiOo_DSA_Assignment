@@ -1,8 +1,6 @@
 #include <iostream>
 #include <limits>
 #include <iomanip>
-#include <vector>
-#include <algorithm>
 #include "admin/AdminList.h"
 #include "admin/GameList.h"
 #include "admin/MemberList.h"
@@ -145,8 +143,8 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
         cout << "Invalid choice. Please enter 1 to 4.\n";
     }
 
-    vector<Game*> games;
-    gameList.collectGames(games);
+    GameArray gameArray;
+    gameList.collectGames(gameArray);
 
     struct GameView {
         Game* game;
@@ -154,8 +152,11 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
         int total;
     };
 
-    vector<GameView> filtered;
-    for (Game* g : games) {
+    GameView* filtered = new GameView[gameArray.size];
+    int filteredCount = 0;
+
+    for (int i = 0; i < gameArray.size; ++i) {
+        Game* g = gameArray.games[i];
         if (g->getCopies() <= 0) {
             continue;
         }
@@ -163,12 +164,14 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
             double avg = 0.0;
             int total = 0;
             ratingList.getRatingSummary(g->getName(), avg, total);
-            filtered.push_back(GameView{ g, avg, total });
+            filtered[filteredCount++] = GameView{ g, avg, total };
         }
     }
 
-    if (filtered.empty()) {
+
+    if (filteredCount == 0) {
         cout << "No games found for " << players << " players.\n";
+        delete[] filtered;
         return;
     }
 
@@ -179,50 +182,41 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
         return (v.total == 0) ? 11.0 : v.average;
         };
 
-    switch (choice) {
-    case 1:
-        sort(filtered.begin(), filtered.end(), [](const GameView& a, const GameView& b) {
-            if (a.game->getYearPublished() == b.game->getYearPublished()) {
-                return a.game->getName() < b.game->getName();
+    // Manual bubble sort
+    for (int i = 0; i < filteredCount - 1; ++i) {
+        for (int j = 0; j < filteredCount - i - 1; ++j) {
+            bool swap = false;
+            switch (choice) {
+            case 1:
+                swap = (filtered[j].game->getYearPublished() < filtered[j + 1].game->getYearPublished());
+                break;
+            case 2:
+                swap = (filtered[j].game->getYearPublished() > filtered[j + 1].game->getYearPublished());
+                break;
+            case 3:
+                swap = (avgForDesc(filtered[j]) < avgForDesc(filtered[j + 1]));
+                break;
+            case 4:
+                swap = (avgForAsc(filtered[j]) > avgForAsc(filtered[j + 1]));
+                break;
             }
-            return a.game->getYearPublished() > b.game->getYearPublished();
-            });
-        break;
-    case 2:
-        sort(filtered.begin(), filtered.end(), [](const GameView& a, const GameView& b) {
-            if (a.game->getYearPublished() == b.game->getYearPublished()) {
-                return a.game->getName() < b.game->getName();
+            if (swap) {
+                GameView temp = filtered[j];
+                filtered[j] = filtered[j + 1];
+                filtered[j + 1] = temp;
             }
-            return a.game->getYearPublished() < b.game->getYearPublished();
-            });
-        break;
-    case 3:
-        sort(filtered.begin(), filtered.end(), [&](const GameView& a, const GameView& b) {
-            double av = avgForDesc(a);
-            double bv = avgForDesc(b);
-            if (av == bv) {
-                return a.game->getName() < b.game->getName();
-            }
-            return av > bv;
-            });
-        break;
-    case 4:
-        sort(filtered.begin(), filtered.end(), [&](const GameView& a, const GameView& b) {
-            double av = avgForAsc(a);
-            double bv = avgForAsc(b);
-            if (av == bv) {
-                return a.game->getName() < b.game->getName();
-            }
-            return av < bv;
-            });
-        break;
+        }
     }
 
     cout << "========================================\n";
     cout << "Games playable by " << players << " players\n";
     cout << "========================================\n";
 
-    for (size_t i = 0; i < filtered.size(); ++i) {
+    cout << "========================================\n";
+    cout << "Games playable by " << players << " players\n";
+    cout << "========================================\n";
+
+    for (int i = 0; i < filteredCount; ++i) {
         const GameView& v = filtered[i];
         cout << "[" << (i + 1) << "] " << v.game->getName()
             << " (" << v.game->getYearPublished() << ")\n";
@@ -238,8 +232,10 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
         cout << "  Available Copies: " << v.game->getCopies() << "\n\n";
     }
 
-    cout << "Total games found: " << filtered.size() << "\n";
+    cout << "Total games found: " << filteredCount << "\n";
     cout << "========================================\n";
+
+    delete[] filtered;
 }
 
 void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, RatingList& ratingList, const string& memberId) {

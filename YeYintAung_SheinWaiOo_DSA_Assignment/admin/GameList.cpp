@@ -197,23 +197,7 @@ void GameList::displayAllGames() const{
 	inorder(root);
 }
 
-
-//void GameList::inorder(BinaryNode* node) const {
-//	if (node == nullptr) {
-//		return;
-//	}
-//	else {
-//		inorder(node->left);
-//        cout << node->item.getName();
-//        if (node->item.getCopies() > 1) {
-//            cout << " (Copies: " << node->item.getCopies() << ")";
-//        }
-//        cout << endl;
-//		inorder(node->right);
-//	}
-//}
-
-//Shein-Tested: Modified inorder to only show available games
+// Modified inorder to only show available games
 void GameList::inorder(BinaryNode * node) const {
     if (node == nullptr) {
         return;
@@ -260,17 +244,17 @@ void GameList::saveToCSV(const std::string& filename) const {
     file.close();
 }
 
-void GameList::inorderCollect(BinaryNode* node, vector<Game*>& games) const {
+void GameList::inorderCollect(BinaryNode* node, GameArray& games) const {
     if (node == nullptr) {
         return;
     }
 
     inorderCollect(node->left, games);
-    games.push_back(&node->item);
+    games.add(&node->item);
     inorderCollect(node->right, games);
 }
 
-void GameList::collectGames(vector<Game*>& games) const {
+void GameList::collectGames(GameArray& games) const {
     games.clear();
     inorderCollect(root, games);
 }
