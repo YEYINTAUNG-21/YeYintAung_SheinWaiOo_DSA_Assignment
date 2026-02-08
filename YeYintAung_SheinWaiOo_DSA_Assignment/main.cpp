@@ -278,10 +278,20 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         }
 
         case 2: {
+
+            // STEP 1: Display all active (not yet returned) borrow records
+    //      for the logged-in member to guide the return process
             string gameName;
 			borrowList.displayActiveBorrows(memberId);
+
+            // STEP 2: Prompt the member to enter the game name to return
 			cout << "Enter game name to return: ";
 			getline(cin, gameName);
+            
+            //STEP 3: Attempt to return the specified game
+            // - Searches for an active borrow record in the linked list
+            // - Marks the borrow as returned
+            // - Restores the game's available copy count
             if (borrowList.returnGame(memberId, gameName, gameList)) {
                 gameList.displayAllGames();
 				cout << "Returned successfully.\n";

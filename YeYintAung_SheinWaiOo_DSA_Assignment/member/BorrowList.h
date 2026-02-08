@@ -21,6 +21,11 @@ private:
     };
 
     Node* head;
+
+    // findActiveBorrow():
+    // Traverses the borrow linked list to locate an active borrow record
+    // (returned == false) that matches the given member ID and game name.
+    // Returns a pointer to the matching node if found, otherwise nullptr.
     Node* findActiveBorrow(const std::string& memberId, const std::string& gameName) const;
 
 public:
@@ -32,6 +37,12 @@ public:
                     const std::string& gameName,
 		            const MemberList& memberList,
                     GameList& gameList);
+
+    // returnGame():
+    // Handles the process of returning a borrowed board game.
+    // The function locates an active borrow record for the given member and game,
+    // marks the record as returned, restores the game's copy count in the BST,
+    // and saves the updated data to CSV files.
 
     bool returnGame(const std::string& memberId,
                     const std::string& gameName,
