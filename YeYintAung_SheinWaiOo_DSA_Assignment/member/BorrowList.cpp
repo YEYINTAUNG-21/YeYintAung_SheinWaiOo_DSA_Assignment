@@ -57,7 +57,6 @@ BorrowList::Node* BorrowList::findActiveBorrow(const std::string& memberId, cons
 // 4. Decrease the game copy count
 // 5. Insert a new BorrowRecord at the head of the linked list
 // 6. Save updated borrow records and game inventory to CSV files
-
 bool BorrowList::borrowGame(const std::string& memberId,
                             const std::string& gameName,
                             const MemberList& memberList,
@@ -103,7 +102,6 @@ bool BorrowList::borrowGame(const std::string& memberId,
 // 2. Update the borrow record state to returned
 // 3. Restore the corresponding game's copy count
 // 4. Persist updated borrow and game data to CSV files
-
 bool BorrowList::returnGame(const std::string& memberId,
                             const std::string& gameName,
                             GameList& gameList) {
@@ -136,19 +134,48 @@ bool BorrowList::returnGame(const std::string& memberId,
     return true;
 }
 
+// displayMemberSummary():
+// Displays the complete borrow and return summary for a specific member.
+// Flow:
+// 1. Traverse the borrow records stored in a singly linked list.
+// 2. Filter records that belong to the given member ID.
+// 3. For each matching record, display the game name and its current status
+//    (Borrowed or Returned) based on the returned flag.
+// 4. If no borrow records exist for the member, display an appropriate message.
+// Note:
+// - This operation is read-only and does not modify any borrow records.
+// - Borrow history is preserved and not deleted.
 void BorrowList::displayMemberSummary(const std::string& memberId) const {
-    // List all borrow records for the given member
+    
+    // STEP 1: Flag to track whether this member has any borrow records
+   // Used to determine whether to display a "no records" message later
     bool any = false;
+
+    // STEP 2: Start traversal from the head of the singly linked list
     Node* curr = head;
+
+    // STEP 3: Traverse the entire borrow linked list
     while (curr != nullptr) {
+
+        // STEP 4: Check if the current borrow record belongs to the given member
         if (curr->data.getMemberId() == memberId) {
+            
+            // STEP 4: Check if the current borrow record belongs to the given member
             any = true;
+
+            // STEP 5: Display the game name and its borrow status
+            // If returned == true  -> display "Returned"
+            // If returned == false -> display "Borrowed"
             std::cout << "- " << curr->data.getGameName()
                       << " : " << (curr->data.isReturned() ? "Returned" : "Borrowed")
                       << "\n";
         }
+
+        // STEP 6: Move to the next node in the linked list
         curr = curr->next;
     }
+
+    // STEP 7: If no borrow records were found for this member, display a message
     if (!any) {
         std::cout << "No borrow records for this member.\n";
     }
