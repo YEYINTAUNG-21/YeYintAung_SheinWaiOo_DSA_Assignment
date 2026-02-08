@@ -102,7 +102,7 @@ void CSVReader::loadGame(const string& filename, GameList& gameList) {
     }
 
     file.close();
-    cout << "Games loaded successfully from " << filename << endl;
+    //cout << "Games loaded successfully from " << filename << endl;
 }
 
 /*
@@ -137,7 +137,7 @@ void CSVReader::loadMember(const string& filename, MemberList& memberList) {
     }
 
     file.close();
-    cout << "Members loaded successfully from " << filename << endl;
+    //cout << "Members loaded successfully from " << filename << endl;
 }
 
 /*
@@ -185,7 +185,7 @@ void CSVReader::loadBorrow(const string& filename,
     }
 
     file.close();
-    cout << "Borrow records loaded successfully from " << filename << endl;
+    //cout << "Borrow records loaded successfully from " << filename << endl;
 }
 
 /*
@@ -225,5 +225,5 @@ void CSVReader::loadReview(const string& filename, RatingList& ratingList) {
     }
 
     file.close();
-    cout << "Reviews loaded successfully from " << filename << endl;
+    //cout << "Reviews loaded successfully from " << filename << endl;
 }
