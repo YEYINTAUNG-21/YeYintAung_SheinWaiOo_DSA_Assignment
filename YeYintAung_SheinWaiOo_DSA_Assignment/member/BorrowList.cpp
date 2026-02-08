@@ -8,6 +8,7 @@ Student ID - S10269743C
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <iomanip> 
 
 /*
 Purpose: Initialize an empty borrow list.
@@ -269,6 +270,11 @@ void BorrowList::displayActiveBorrows(const std::string& memberId) const {
     }
 }
 
+/*
+Name: Ye Yint Aung
+Group - 3
+Student ID - S10268975C
+*/
 // Admin function
 /*
 Purpose: Display all borrow records (admin view).
@@ -276,17 +282,21 @@ Parameters: None.
 Returns: None.
 */
 void BorrowList::displayAllBorrowSummary() const {
-    // List all borrow records (admin view)
     if (head == nullptr) {
         std::cout << "No borrow records.\n";
         return;
     }
+
     Node* curr = head;
+
     while (curr != nullptr) {
-        std::cout << curr->data.getMemberId() << " - "
-                  << curr->data.getGameName() << " : "
-                  << (curr->data.isReturned() ? "Returned" : "Borrowed")
-                  << "\n";
+        std::cout << std::left
+            << std::setw(6) << curr->data.getMemberId()
+            << " - "
+            << std::setw(15) << curr->data.getGameName()
+            << " : "
+            << (curr->data.isReturned() ? "Returned" : "Borrowed")
+            << "\n";
         curr = curr->next;
     }
 }
