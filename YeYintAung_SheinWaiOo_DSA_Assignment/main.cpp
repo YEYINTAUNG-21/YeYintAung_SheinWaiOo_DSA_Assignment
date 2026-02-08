@@ -257,10 +257,20 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         switch (choice) {
         case 1: {
             string gameName;
+            // STEP 1: Display all available games to the logged-in member
 			gameList.displayAllGames();
+            
+            // STEP 2: Prompt member to enter the game name they want to borrow
             cout << "Enter game name to borrow: ";
 			getline(cin, gameName);
+            
+            // STEP 3: Attempt to borrow the selected game
+            // - Validates member existence
+            // - Checks game availability
+            // - Records the borrow in a linked list
+            // - Updates game inventory
             if (borrowList.borrowGame(memberId, gameName, memberList, gameList)) {
+                // STEP 4: Display updated game list after successful borrow
                 gameList.displayAllGames();
 				cout << "Borrowed successfully.\n";
             }
@@ -269,7 +279,7 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
 
         case 2: {
             string gameName;
-			gameList.displayAllGames();
+			borrowList.displayActiveBorrows(memberId);
 			cout << "Enter game name to return: ";
 			getline(cin, gameName);
             if (borrowList.returnGame(memberId, gameName, gameList)) {

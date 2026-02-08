@@ -1,3 +1,4 @@
+
 #include "BorrowList.h"
 #include <iostream>
 #include <fstream>
@@ -5,6 +6,7 @@
 
 BorrowList::BorrowList() : head(nullptr) {
     // Initialize empty linked list for borrow records
+    //When a BorrowList object is created, it starts with no nodes
 }
 
 BorrowList::~BorrowList() {
@@ -32,34 +34,48 @@ BorrowList::Node* BorrowList::findActiveBorrow(const std::string& memberId, cons
     return nullptr;
 }
 
+// borrowGame():
+// Handles the process of a member borrowing a board game.
+// Flow:
+// 1. Validate that the member exists (using MemberList hash table)
+// 2. Validate that the game exists (using GameList BST)
+// 3. Check if there are available copies
+// 4. Decrease the game copy count
+// 5. Insert a new BorrowRecord at the head of the linked list
+// 6. Save updated borrow records and game inventory to CSV files
+
 bool BorrowList::borrowGame(const std::string& memberId,
                             const std::string& gameName,
                             const MemberList& memberList,
                             GameList& gameList) {
-    // Validate the member exists before recording a borrow
+    // STEP 1: Validate member existence using hash table
     if (!memberList.exists(memberId)) {
         std::cout << "Member not found.\n";
         return false;
     }
 
-    // Check game exists and has available copies
+    // STEP 2: Search for the game in the BST
     Game* game = gameList.searchGameByName(gameName);
     if (game == nullptr) {
         std::cout << "Game not found.\n";
         return false;
     }
+
+    // STEP 3: Check if the game has available copies
     if (game->getCopies() <= 0) {
         std::cout << "No available copies.\n";
         return false;
     }
 
-    // Decrement copy count
+    // STEP 4: Decrease the available copy count of the game
     game->decreaseCopies();
 
-    // Prepend new borrow record to the list
+    // STEP 5: Create a new borrow record and insert it at the head
+    // of the singly linked list (O(1) insertion)
     Node* newNode = new Node{ BorrowRecord(memberId, gameName), head };
     head = newNode;
 
+    // STEP 6: Persist changes to CSV files
     saveToCSV("data/borrows.csv");
     gameList.saveToCSV("data/games.csv");
 
@@ -112,6 +128,22 @@ void BorrowList::displayMemberSummary(const std::string& memberId) const {
     }
 }
 
+// Display only currently borrowed (not yet returned) games for the member
+void BorrowList::displayActiveBorrows(const std::string& memberId) const {
+    bool any = false;
+    Node* curr = head;
+    while (curr != nullptr) {
+        if (curr->data.getMemberId() == memberId && !curr->data.isReturned()) {
+            any = true;
+			std::cout << "Your active borrows:\n";
+            std::cout << "- " << curr->data.getGameName() << "\n";
+        }
+        curr = curr->next;
+    }
+    if (!any) {
+        std::cout << "No active borrows for you yet.\n";
+    }
+}
 // Admin function
 void BorrowList::displayAllBorrowSummary() const {
     // List all borrow records (admin view)

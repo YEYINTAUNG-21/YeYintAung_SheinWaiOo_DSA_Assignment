@@ -3,6 +3,10 @@ Name: Shein Wai Oo
 Group - 3
 Student ID - S10269743C
 */
+// BorrowList uses a singly linked list to store borrow records.
+// Each borrow action inserts a new BorrowRecord node at the head of the list.
+// This allows fast O(1) insertion and preserves full borrow history.
+
 #pragma once
 #include <string>
 #include "../admin/GameList.h"
@@ -34,6 +38,7 @@ public:
                     GameList& gameList);
 
     void displayMemberSummary(const std::string& memberId) const;
+    void displayActiveBorrows(const std::string& memberId) const;
 
     // Admin operation
     void displayAllBorrowSummary() const;
