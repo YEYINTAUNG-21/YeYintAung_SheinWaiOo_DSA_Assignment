@@ -6,6 +6,14 @@
 
 using namespace std;
 
+/*
+Function: trim
+Description: Removes leading and trailing whitespace from a string.
+Parameters:
+- s: The input string to be trimmed.
+Returns:
+- string: The trimmed string.
+*/
 string trim(const string& s) {
     int start = 0;
     int end = (int)s.length() - 1;
@@ -16,6 +24,15 @@ string trim(const string& s) {
     return s.substr(start, end - start + 1);
 }
 
+/*
+Function: loadGame
+Description: Loads game data from a CSV file and inserts the games into the game list.
+Parameters:
+- filename: The name of the CSV file containing game data.
+- gameList: Reference to the GameList to store loaded games.
+Returns:
+- void
+*/
 void CSVReader::loadGame(const string& filename, GameList& gameList) {
     ifstream file(filename);
 
@@ -88,6 +105,15 @@ void CSVReader::loadGame(const string& filename, GameList& gameList) {
     cout << "Games loaded successfully from " << filename << endl;
 }
 
+/*
+Function: loadMember
+Description: Loads member data from a CSV file and inserts members into the member list.
+Parameters:
+- filename: The name of the CSV file containing member data.
+- memberList: Reference to the MemberList to store loaded members.
+Returns:
+- void
+*/
 void CSVReader::loadMember(const string& filename, MemberList& memberList) {
     ifstream file(filename);
     if (!file.is_open()) {
@@ -114,6 +140,17 @@ void CSVReader::loadMember(const string& filename, MemberList& memberList) {
     cout << "Members loaded successfully from " << filename << endl;
 }
 
+/*
+Function: loadBorrow
+Description: Loads borrow records from a CSV file and adds them to the borrow list.
+Parameters:
+- filename: The name of the CSV file containing borrow records.
+- borrowList: Reference to the BorrowList to store records.
+- memberList: Reference to the MemberList (for validation context).
+- gameList: Reference to the GameList (for validation context).
+Returns:
+- void
+*/
 void CSVReader::loadBorrow(const string& filename,
     BorrowList& borrowList,
     const MemberList& memberList,
@@ -151,6 +188,15 @@ void CSVReader::loadBorrow(const string& filename,
     cout << "Borrow records loaded successfully from " << filename << endl;
 }
 
+/*
+Function: loadReview
+Description: Loads game reviews and ratings from a CSV file into the rating list.
+Parameters:
+- filename: The name of the CSV file containing review data.
+- ratingList: Reference to the RatingList to store loaded ratings.
+Returns:
+- void
+*/
 void CSVReader::loadReview(const string& filename, RatingList& ratingList) {
     ifstream file(filename);
     if (!file.is_open()) {
