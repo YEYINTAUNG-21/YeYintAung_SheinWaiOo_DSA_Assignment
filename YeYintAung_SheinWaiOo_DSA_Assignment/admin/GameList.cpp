@@ -1,19 +1,49 @@
+/*
+Name: Ye Yint Aung
+Group - 3
+Student ID - S10268975C
+*/
 #include "GameList.h"
 #include<string>
 #include <fstream>
 #include<iostream>
 using namespace std;
 
+
+/*
+Function: GameList
+Description: Default constructor that initializes an empty game list with a null root.
+Parameters:
+- None
+Returns:
+- None
+*/
 GameList::GameList() {
 	root = nullptr;
 }
 
+/*
+Function: ~GameList
+Description: Destructor that removes all game nodes from the binary search tree and frees memory.
+Parameters:
+- None
+Returns:
+- None
+*/
 GameList::~GameList() {
     while (root != nullptr) {
         root = remove(root, root->item.getName());
     }
 }
 
+/*
+Function: addGame
+Description: Adds a new game to the system or increases copies if the game already exists.
+Parameters:
+- None
+Returns:
+- void
+*/
 void GameList::addGame() {
     string name;
     int minP, maxP, minT, maxT, year;
@@ -61,6 +91,14 @@ void GameList::addGame() {
     saveToCSV("data/games.csv");
 }
 
+/*
+Function: removeGame
+Description: Removes copies of a game or deletes the game entirely from the tree based on user input.
+Parameters:
+- None
+Returns:
+- void
+*/
 void GameList::removeGame() {
     displayAllGames();
     string name;
@@ -107,7 +145,15 @@ void GameList::removeGame() {
     saveToCSV("data/games.csv");
 }
 
-
+/*
+Function: remove
+Description: Removes a game node from the binary search tree while maintaining BST properties.
+Parameters:
+- node: The current node in the tree.
+- gameName: The name of the game to remove.
+Returns:
+- BinaryNode*: The updated subtree root after deletion.
+*/
 GameList::BinaryNode* GameList::remove(BinaryNode* node, const string& gameName) {
     if (node == nullptr) {
         return nullptr;
@@ -145,10 +191,27 @@ GameList::BinaryNode* GameList::remove(BinaryNode* node, const string& gameName)
     return node;
 }
 
+/*
+Function: insertGame
+Description: Inserts a game into the binary search tree.
+Parameters:
+- game: The game object to insert.
+Returns:
+- void
+*/
 void GameList::insertGame(const Game& game) {
 	root = insert(root, game);
 }
 
+/*
+Function: insert
+Description: Recursively inserts a game into the BST or increases copies if the game already exists.
+Parameters:
+- node: The current node in the tree.
+- game: The game object to insert.
+Returns:
+- BinaryNode*: The updated subtree root.
+*/
 GameList::BinaryNode* GameList::insert(BinaryNode* node, const Game& game) {
     if (node == nullptr) {
         BinaryNode* newNode = new BinaryNode;
@@ -170,6 +233,14 @@ GameList::BinaryNode* GameList::insert(BinaryNode* node, const Game& game) {
     return node;
 }
 
+/*
+Function: searchGameByName
+Description: Searches for a game in the BST by its name.
+Parameters:
+- gameName: The name of the game to search for.
+Returns:
+- Game*: Pointer to the game if found, otherwise nullptr.
+*/
 Game* GameList::searchGameByName(const string& gameName) const {
     BinaryNode* node = search(root, gameName);
     if (node == nullptr) {
@@ -178,6 +249,15 @@ Game* GameList::searchGameByName(const string& gameName) const {
     return &(node->item);
 }
 
+/*
+Function: search
+Description: Recursively searches the BST for a game by name.
+Parameters:
+- node: The current node in the tree.
+- gameName: The name of the game to search for.
+Returns:
+- BinaryNode*: Pointer to the found node or nullptr if not found.
+*/
 GameList::BinaryNode* GameList::search(BinaryNode* node, const string& gameName) const {
     if (node == nullptr) {
         return nullptr;
@@ -193,10 +273,26 @@ GameList::BinaryNode* GameList::search(BinaryNode* node, const string& gameName)
     }
 }
 
+/*
+Function: displayAllGames
+Description: Displays all available games in sorted order.
+Parameters:
+- None
+Returns:
+- void
+*/
 void GameList::displayAllGames() const{
 	inorder(root);
 }
 
+/*
+Function: inorder
+Description: Performs an inorder traversal and displays games with available copies.
+Parameters:
+- node: The current node in the tree.
+Returns:
+- void
+*/
 // Modified inorder to only show available games
 void GameList::inorder(BinaryNode * node) const {
     if (node == nullptr) {
@@ -217,6 +313,15 @@ void GameList::inorder(BinaryNode * node) const {
     inorder(node->right);
 }
 
+/*
+Function: saveInOrder
+Description: Writes game data to a CSV file using inorder traversal.
+Parameters:
+- node: The current node in the tree.
+- file: Output file stream.
+Returns:
+- void
+*/
 void GameList::saveInOrder(BinaryNode* node, ofstream& file) const {
     if (!node) return;
 
@@ -235,6 +340,14 @@ void GameList::saveInOrder(BinaryNode* node, ofstream& file) const {
     saveInOrder(node->right, file);
 }
 
+/*
+Function: saveToCSV
+Description: Saves all game records to a CSV file.
+Parameters:
+- filename: The name of the CSV file.
+Returns:
+- void
+*/
 void GameList::saveToCSV(const std::string& filename) const {
     std::ofstream file(filename, ios::out | ios::trunc);
     if (!file.is_open()) return;
@@ -244,6 +357,15 @@ void GameList::saveToCSV(const std::string& filename) const {
     file.close();
 }
 
+/*
+Function: inorderCollect
+Description: Collects all game objects into an array using inorder traversal.
+Parameters:
+- node: The current node in the tree.
+- games: Array to store game pointers.
+Returns:
+- void
+*/
 void GameList::inorderCollect(BinaryNode* node, GameArray& games) const {
     if (node == nullptr) {
         return;
@@ -254,6 +376,14 @@ void GameList::inorderCollect(BinaryNode* node, GameArray& games) const {
     inorderCollect(node->right, games);
 }
 
+/*
+Function: collectGames
+Description: Clears and collects all games from the tree into an array.
+Parameters:
+- games: Array to store collected games.
+Returns:
+- void
+*/
 void GameList::collectGames(GameArray& games) const {
     games.clear();
     inorderCollect(root, games);

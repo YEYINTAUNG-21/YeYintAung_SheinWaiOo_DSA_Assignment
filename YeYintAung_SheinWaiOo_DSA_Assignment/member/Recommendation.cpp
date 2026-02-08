@@ -1,9 +1,32 @@
+/*
+Name: Ye Yint Aung
+Group - 3
+Student ID - S10268975C
+*/
 #include "Recommendation.h"
 
+/*
+Function: Recommendation
+Description: Constructor that initializes the Recommendation system with a reference to the rating list.
+Parameters:
+- ratingL: Reference to the RatingList containing all user ratings.
+Returns:
+- None
+*/
 Recommendation::Recommendation(RatingList& ratingL) {
 	ratingList = &ratingL;
 }
 
+/*
+Function: containsMember
+Description: Checks whether a member ID already exists in the given member list.
+Parameters:
+- members: Array of member IDs.
+- size: Number of elements currently in the array.
+- memberId: The member ID to check.
+Returns:
+- bool: True if the member ID exists, false otherwise.
+*/
 bool Recommendation::containsMember(string members[], int size, const string& memberId) const {
 	for (int i = 0; i < size; i++) {
 		if (members[i] == memberId) {
@@ -13,6 +36,15 @@ bool Recommendation::containsMember(string members[], int size, const string& me
 	return false;
 }
 
+
+/*
+Function: recommendGames
+Description: Recommends games based on ratings from members who liked a target game.
+Parameters:
+- targetGameName: The name of the game used as the recommendation reference.
+Returns:
+- void
+*/
 void Recommendation::recommendGames(const string& targetGameName) {
 	string likedMembers[MAX_MEMBERS];
 	int likedCount = 0;
@@ -94,10 +126,29 @@ void Recommendation::recommendGames(const string& targetGameName) {
 	delete[] score;
 }
 
+/*
+Function: mergeSort
+Description: Sorts an array of game scores using merge sort.
+Parameters:
+- scores: Array of GameScore objects.
+- n: Number of elements in the array.
+Returns:
+- void
+*/
 void Recommendation::mergeSort(GameScore scores[], int n) {
 	mergeSort(scores, 0, n - 1);
 }
 
+/*
+Function: mergeSort
+Description: Recursively divides the array and sorts game scores.
+Parameters:
+- scores: Array of GameScore objects.
+- first: Starting index.
+- last: Ending index.
+Returns:
+- void
+*/
 void Recommendation::mergeSort(GameScore scores[], int first, int last) {
 	if (first < last) {
 		int mid = (first + last) / 2;
@@ -107,6 +158,17 @@ void Recommendation::mergeSort(GameScore scores[], int first, int last) {
 	}
 }
 
+/*
+Function: merge
+Description: Merges two sorted subarrays of game scores in descending order of average rating.
+Parameters:
+- scores: Array of GameScore objects.
+- first: Starting index of the first subarray.
+- mid: Ending index of the first subarray.
+- last: Ending index of the second subarray.
+Returns:
+- void
+*/
 void Recommendation::merge(GameScore scores[], int first, int mid, int last) {
 	int size = last - first + 1;
 	GameScore* temp = new GameScore[size];
