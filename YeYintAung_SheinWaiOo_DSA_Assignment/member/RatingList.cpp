@@ -1,15 +1,35 @@
+/*
+Name: Shein Wai Oo
+Group - 3
+Student ID - S10269743C
+*/
 #include "RatingList.h"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 
+/*
+Purpose: Get the head node (for recommendation).
+Parameters: None.
+Returns: Pointer to head node.
+*/
 RatingList::Node* RatingList::getHead() const { // need for recommendation
     return head;
 }
 
+/*
+Purpose: Initialize an empty rating list.
+Parameters: None.
+Returns: None.
+*/
 RatingList::RatingList() : head(nullptr) {
 }
 
+/*
+Purpose: Destroy the rating list and free all nodes.
+Parameters: None.
+Returns: None.
+*/
 RatingList::~RatingList() {
     Node* curr = head;
     while (curr != nullptr) {
@@ -20,7 +40,13 @@ RatingList::~RatingList() {
     head = nullptr;
 }
 
-// Find a review by memberId and gameName
+/*
+Purpose: Find a review by member ID and game name.
+Parameters:
+- memberId: Member ID to match.
+- gameName: Game name to match.
+Returns: Pointer to matching node, or nullptr if not found.
+*/
 RatingList::Node* RatingList::findReview(const string& memberId, const string& gameName) {
     Node* curr = head;
     while (curr != nullptr) {
@@ -33,11 +59,25 @@ RatingList::Node* RatingList::findReview(const string& memberId, const string& g
     return nullptr;
 }
 
+/*
+Purpose: Add a rating record to the list.
+Parameters:
+- rating: Rating record to add.
+Returns: None.
+*/
 void RatingList::addRecord(const Rating& rating) {
     Node* newNode = new Node{ rating, head };
     head = newNode;
 }
 
+/*
+Purpose: Add or update a review for a game by a member.
+Parameters:
+- memberId: Member ID creating the review.
+- memberList: Member list for validation.
+- gameList: Game list for validation.
+Returns: True if review saved, otherwise false.
+*/
 bool RatingList::addReview(const string& memberId, const MemberList& memberList, const GameList& gameList) {
     cout << "----------------------------------------\n";
     cout << "Rate a Game\n";
@@ -135,6 +175,12 @@ bool RatingList::addReview(const string& memberId, const MemberList& memberList,
 
 }
 
+/*
+Purpose: Save ratings to CSV.
+Parameters:
+- filename: Output CSV path.
+Returns: None.
+*/
 void RatingList::saveToCSV(const string& filename) const {
     ofstream file(filename, ios::out | ios::trunc);
     if (!file.is_open()) return;
@@ -153,6 +199,12 @@ void RatingList::saveToCSV(const string& filename) const {
     file.close();
 }
 
+/*
+Purpose: Recalculate and save average ratings to CSV.
+Parameters:
+- filename: Output CSV path.
+Returns: None.
+*/
 void RatingList::updateAverageRatings(const string& filename) const {
     struct AvgNode {
         string gameName;
@@ -202,6 +254,14 @@ void RatingList::updateAverageRatings(const string& filename) const {
     }
 }
 
+/*
+Purpose: Get rating summary for a game.
+Parameters:
+- gameName: Game name to summarize.
+- average: Output average rating.
+- total: Output total review count.
+Returns: None.
+*/
 void RatingList::getRatingSummary(const string& gameName, double& average, int& total) const {
     int sum = 0;
     total = 0;
@@ -223,6 +283,13 @@ void RatingList::getRatingSummary(const string& gameName, double& average, int& 
     }
 }
 
+/*
+Purpose: Display all reviews for a game.
+Parameters:
+- gameName: Game name whose reviews to display.
+- memberList: Member list for reviewer names.
+Returns: None.
+*/
 void RatingList::displayReviews(const string& gameName, const MemberList& memberList) const {
     bool any = false;
     Node* curr = head;

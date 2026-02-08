@@ -1,14 +1,29 @@
 
+/*
+Name: Shein Wai Oo
+Group - 3
+Student ID - S10269743C
+*/
 #include "BorrowList.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+/*
+Purpose: Initialize an empty borrow list.
+Parameters: None.
+Returns: None.
+*/
 BorrowList::BorrowList() : head(nullptr) {
     // Initialize empty linked list for borrow records
     //When a BorrowList object is created, it starts with no nodes
 }
 
+/*
+Purpose: Destroy the borrow list and free all nodes.
+Parameters: None.
+Returns: None.
+*/
 BorrowList::~BorrowList() {
     // Free all nodes in the linked list
     Node* curr = head;
@@ -20,6 +35,13 @@ BorrowList::~BorrowList() {
     head = nullptr;
 }
 
+/*
+Purpose: Find an active (not returned) borrow record for a member and game.
+Parameters:
+- memberId: Member ID to match.
+- gameName: Game name to match.
+Returns: Pointer to matching node, or nullptr if not found.
+*/
 BorrowList::Node* BorrowList::findActiveBorrow(const std::string& memberId, const std::string& gameName) const {
   
     // STEP 1: Start traversal from the head of the linked list
@@ -49,6 +71,15 @@ BorrowList::Node* BorrowList::findActiveBorrow(const std::string& memberId, cons
 }
 
 // borrowGame():
+/*
+Purpose: Borrow a game and record the transaction.
+Parameters:
+- memberId: Member ID who borrows the game.
+- gameName: Game to borrow.
+- memberList: Member list for validation.
+- gameList: Game list for availability updates.
+Returns: True if borrow succeeds, otherwise false.
+*/
 // Handles the process of a member borrowing a board game.
 // Flow:
 // 1. Validate that the member exists (using MemberList hash table)
@@ -97,6 +128,14 @@ bool BorrowList::borrowGame(const std::string& memberId,
 }
 
 // returnGame():
+/*
+Purpose: Return a borrowed game and update inventory.
+Parameters:
+- memberId: Member ID returning the game.
+- gameName: Game to return.
+- gameList: Game list for inventory updates.
+Returns: True if return succeeds, otherwise false.
+*/
 // Flow:
 // 1. Locate an active borrow record using findActiveBorrow()
 // 2. Update the borrow record state to returned
@@ -135,6 +174,12 @@ bool BorrowList::returnGame(const std::string& memberId,
 }
 
 // displayMemberSummary():
+/*
+Purpose: Display all borrow/return records for a member.
+Parameters:
+- memberId: Member ID whose records to display.
+Returns: None.
+*/
 // Displays the complete borrow and return summary for a specific member.
 // Flow:
 // 1. Traverse the borrow records stored in a singly linked list.
@@ -182,6 +227,12 @@ void BorrowList::displayMemberSummary(const std::string& memberId) const {
 }
 
 // displayActiveBorrows():
+/*
+Purpose: Display only active (not returned) borrows for a member.
+Parameters:
+- memberId: Member ID whose active borrows to display.
+Returns: None.
+*/
 // Traverses the singly linked list of borrow records and displays
 // all active borrow entries (returned == false) for the specified member.
 // This function is used to guide the member during the return process.
@@ -219,6 +270,11 @@ void BorrowList::displayActiveBorrows(const std::string& memberId) const {
 }
 
 // Admin function
+/*
+Purpose: Display all borrow records (admin view).
+Parameters: None.
+Returns: None.
+*/
 void BorrowList::displayAllBorrowSummary() const {
     // List all borrow records (admin view)
     if (head == nullptr) {
@@ -235,11 +291,23 @@ void BorrowList::displayAllBorrowSummary() const {
     }
 }
 
+/*
+Purpose: Add a borrow record node to the list.
+Parameters:
+- record: Borrow record to add.
+Returns: None.
+*/
 void BorrowList::addRecord(const BorrowRecord& record) {
     Node* newNode = new Node{ record, head };
     head = newNode;
 }
 
+/*
+Purpose: Save all borrow records to CSV.
+Parameters:
+- filename: Output CSV path.
+Returns: None.
+*/
 void BorrowList::saveToCSV(const string& filename) {
     std::ofstream file(filename, std::ios::out | std::ios::trunc);
     if (!file.is_open()) return;

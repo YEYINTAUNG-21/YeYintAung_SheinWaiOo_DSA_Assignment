@@ -10,6 +10,16 @@
 #include "member/Recommendation.h"
 using namespace std;
 
+/*
+Purpose: Display the admin menu and route admin actions.
+Parameters:
+- gameList: Game list for managing inventory.
+- memberList: Member list for managing members.
+- borrowList: Borrow list for admin summaries.
+- adminList: Admin list for account info.
+- adminId: Logged-in admin ID.
+Returns: None.
+*/
 void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowList, AdminList& adminList, const string& adminId) {
     cout << "Welcome, " << adminList.getAdminName(adminId) << "!\n";
     int choice;
@@ -57,6 +67,14 @@ void adminMenu(GameList& gameList, MemberList& memberList, BorrowList& borrowLis
     } while (choice != 0);
 }
 
+/*
+Purpose: Display a selected game's details and ratings.
+Parameters:
+- gameList: Game list for game lookup.
+- ratingList: Rating list for summary and reviews.
+- memberList: Member list for reviewer names.
+Returns: None.
+*/
 void viewGameDetails(GameList& gameList, RatingList& ratingList, MemberList& memberList) {
     string gameName;
 
@@ -101,6 +119,13 @@ void viewGameDetails(GameList& gameList, RatingList& ratingList, MemberList& mem
     cout << "========================================\n";
 }
 
+/*
+Purpose: Display games filtered by player count and sorted by criteria.
+Parameters:
+- gameList: Game list for collecting games.
+- ratingList: Rating list for average ratings.
+Returns: None.
+*/
 void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
     cout << "----------------------------------------\n";
     cout << "Filter Games by Player Count\n";
@@ -238,6 +263,16 @@ void displayGamesByPlayers(GameList& gameList, RatingList& ratingList) {
     delete[] filtered;
 }
 
+/*
+Purpose: Display and handle the member menu flow.
+Parameters:
+- gameList: Game list for member operations.
+- borrowList: Borrow list for borrow/return operations.
+- memberList: Member list for validation and names.
+- ratingList: Rating list for reviews.
+- memberId: Logged-in member ID.
+Returns: None.
+*/
 void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberList, RatingList& ratingList, const string& memberId) {
     cout << "Welcome, " << memberList.getMemberName(memberId) << "!\n";
     int choice;
@@ -314,7 +349,6 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
         }
 
         case 6: {
-            cout << "Enter Member ID: " << memberId << "\n";
             if (ratingList.addReview(memberId, memberList, gameList)) {
             }
             break;
@@ -349,6 +383,11 @@ void memberMenu(GameList& gameList, BorrowList& borrowList, MemberList& memberLi
     } while (choice != 0);
 }
 
+/*
+Purpose: Application entry point. Loads data and handles login flow.
+Parameters: None.
+Returns: Exit code (0 on normal completion).
+*/
 int main()
 {
     GameList gameList;
